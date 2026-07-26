@@ -1,4 +1,10 @@
-import { LogOutIcon, RotateCcwIcon, StoreIcon, UsersIcon } from "lucide-react"
+import {
+  BuildingIcon,
+  LogOutIcon,
+  RotateCcwIcon,
+  StoreIcon,
+  UsersIcon,
+} from "lucide-react"
 import { toast } from "sonner"
 import { NavLink, Outlet } from "react-router-dom"
 
@@ -9,10 +15,12 @@ import { Separator } from "@/components/ui/separator"
 import { cn } from "@/lib/utils"
 import { resetEmployees } from "@/data/employees"
 import { resetShops } from "@/data/shops"
+import { resetRentals } from "@/data/rentals"
 
 const NAV_ITEMS = [
   { to: "/employees", label: "Employees", icon: UsersIcon },
   { to: "/shops", label: "Shops", icon: StoreIcon },
+  { to: "/rentals", label: "Rentals", icon: BuildingIcon },
 ]
 
 function NavLinks({ className }: { className?: string }) {
@@ -43,9 +51,10 @@ export function AppLayout() {
   const { user, signOut } = useAuth()
 
   async function handleResetDemoData() {
-    await Promise.all([resetEmployees(), resetShops()])
+    await Promise.all([resetEmployees(), resetShops(), resetRentals()])
     toast.success("Demo data reset", {
-      description: "Employees and shops have been restored to their seed data.",
+      description:
+        "Employees, shops, and rentals have been restored to their seed data.",
     })
     window.setTimeout(() => window.location.reload(), 600)
   }

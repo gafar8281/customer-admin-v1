@@ -65,6 +65,27 @@ sections are accessible.
 
 ---
 
+## Feature 3: Rental Management
+
+### Capabilities
+- **Add** a new rental record
+- **Update** an existing rental record
+- **Delete** a rental record
+- List / view all rentals
+
+### Fields
+
+| Field | Type | Notes |
+|---|---|---|
+| `apartmentNumber` | string | Apartment/unit identifier |
+| `tenantName` | string | Full name of the tenant |
+| `leaseExpiryDate` | date | Lease expiry date — used to flag upcoming/overdue renewals |
+| `totalAmount` | number (SAR) | Total contract value for the lease |
+| `paidAmount` | number (SAR) | Amount paid so far by the tenant |
+| Remaining Balance | number (SAR), derived | `totalAmount - paidAmount`. Not stored — computed on read/render so it can never drift out of sync. Validation enforces `paidAmount <= totalAmount` |
+
+---
+
 ## Mock Data
 
 Until a real backend/database is connected, the feature should ship with local mock

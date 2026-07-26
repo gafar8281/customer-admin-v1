@@ -1,6 +1,6 @@
 import { PencilIcon, Trash2Icon } from "lucide-react"
 
-import { LeaseStatusBadge } from "@/components/shops/LeaseStatusBadge"
+import { LeaseStatusBadge } from "@/components/common/LeaseStatusBadge"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
@@ -62,9 +62,7 @@ export function ShopTable({
               <TableCell>
                 <div className="flex items-center gap-2">
                   <span>{formatDate(shop.shopLeaseExpiryDate)}</span>
-                  <LeaseStatusBadge
-                    shopLeaseExpiryDate={shop.shopLeaseExpiryDate}
-                  />
+                  <LeaseStatusBadge expiryDate={shop.shopLeaseExpiryDate} />
                 </div>
               </TableCell>
               <TableCell>
