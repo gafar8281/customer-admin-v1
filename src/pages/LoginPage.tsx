@@ -66,7 +66,7 @@ export function LoginPage() {
         <CardHeader>
           <CardTitle>Customer Admin</CardTitle>
           <CardDescription>
-            Sign in to manage employees and shops.
+            Sign in to access the admin dashboard
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -104,9 +104,9 @@ export function LoginPage() {
                 {isSubmitting ? "Signing in…" : "Sign in"}
               </Button>
               <p className="text-center text-xs text-muted-foreground">
-                Demo credentials:{" "}
+                {/* Demo credentials:{" "}
                 <span className="font-medium">customer@email.com</span> /{" "}
-                <span className="font-medium">cust@123</span>
+                <span className="font-medium">cust@123</span> */}
               </p>
             </FieldGroup>
           </form>

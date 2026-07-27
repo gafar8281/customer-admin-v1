@@ -86,6 +86,24 @@ sections are accessible.
 
 ---
 
+## Feature 4: Debt Management
+
+### Capabilities
+- **Add** a new debt record
+- **Update** an existing debt record
+- **Delete** a debt record
+- List / view all debts
+
+### Fields
+
+| Field | Type | Notes |
+|---|---|---|
+| `customer` | string | Name of the customer the company owes money to |
+| `note` | string (optional) | Free-text note on what the debt is for |
+| `debtWeOwe` | number (SAR) | Amount the company owes the customer |
+
+---
+
 ## Mock Data
 
 Until a real backend/database is connected, the feature should ship with local mock
