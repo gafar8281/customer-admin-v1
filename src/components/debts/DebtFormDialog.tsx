@@ -1,6 +1,7 @@
-import { useEffect } from "react"
+import { useEffect, useMemo } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -15,7 +16,7 @@ import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import {
-  debtFormSchema,
+  buildDebtFormSchema,
   type Debt,
   type DebtFormInput,
   type DebtFormValues,
@@ -38,13 +39,16 @@ export function DebtFormDialog({
   debt?: Debt
   onSubmit: (values: DebtFormValues) => Promise<void>
 }) {
+  const { t } = useTranslation()
+  const schema = useMemo(() => buildDebtFormSchema(t), [t])
+
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors, isSubmitting },
   } = useForm<DebtFormInput, unknown, DebtFormValues>({
-    resolver: zodResolver(debtFormSchema),
+    resolver: zodResolver(schema),
     defaultValues: EMPTY_VALUES,
   })
 
@@ -63,19 +67,23 @@ export function DebtFormDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md" closeLabel={t("common.close")}>
         <DialogHeader>
-          <DialogTitle>{isEdit ? "Edit Debt" : "Add Debt"}</DialogTitle>
+          <DialogTitle>
+            {isEdit ? t("debts.form.editTitle") : t("debts.form.addTitle")}
+          </DialogTitle>
           <DialogDescription>
             {isEdit
-              ? "Update the amount owed to this customer."
-              : "Enter the details for the new debt."}
+              ? t("debts.form.editDescription")
+              : t("debts.form.addDescription")}
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit(handleFormSubmit)} noValidate>
           <FieldGroup>
             <Field>
-              <FieldLabel htmlFor="customer">Customer</FieldLabel>
+              <FieldLabel htmlFor="customer">
+                {t("debts.form.customer")}
+              </FieldLabel>
               <Input
                 id="customer"
                 aria-invalid={!!errors.customer}
@@ -85,7 +93,7 @@ export function DebtFormDialog({
             </Field>
 
             <Field>
-              <FieldLabel htmlFor="note">Note (optional)</FieldLabel>
+              <FieldLabel htmlFor="note">{t("debts.form.note")}</FieldLabel>
               <Textarea
                 id="note"
                 rows={2}
@@ -96,7 +104,9 @@ export function DebtFormDialog({
             </Field>
 
             <Field>
-              <FieldLabel htmlFor="debtWeOwe">Debt We Owe (SAR)</FieldLabel>
+              <FieldLabel htmlFor="debtWeOwe">
+                {t("debts.form.debtWeOwe")}
+              </FieldLabel>
               <Input
                 id="debtWeOwe"
                 type="number"
@@ -116,10 +126,14 @@ export function DebtFormDialog({
               variant="outline"
               onClick={() => onOpenChange(false)}
             >
-              Cancel
+              {t("common.cancel")}
             </Button>
             <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Saving…" : isEdit ? "Save changes" : "Add debt"}
+              {isSubmitting
+                ? t("common.saving")
+                : isEdit
+                  ? t("common.saveChanges")
+                  : t("debts.form.submitAdd")}
             </Button>
           </DialogFooter>
         </form>

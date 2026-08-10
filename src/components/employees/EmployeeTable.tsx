@@ -1,4 +1,5 @@
 import { PencilIcon, Trash2Icon } from "lucide-react"
+import { useTranslation } from "react-i18next"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -9,7 +10,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { formatSAR, maskNationalId } from "@/lib/format"
+import { useFormat } from "@/i18n/useFormat"
+import { maskNationalId } from "@/lib/format"
 import type { Employee } from "@/schemas/employee"
 
 export function EmployeeTable({
@@ -21,18 +23,31 @@ export function EmployeeTable({
   onEdit: (employee: Employee) => void
   onDelete: (employee: Employee) => void
 }) {
+  const { t } = useTranslation()
+  const { formatSAR } = useFormat()
+
   return (
     <div className="overflow-x-auto rounded-xl border">
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Name</TableHead>
-            <TableHead>National ID</TableHead>
-            <TableHead>Nationality</TableHead>
-            <TableHead className="text-right">Labor Expense</TableHead>
-            <TableHead className="text-right">Saudization</TableHead>
+            <TableHead>{t("employees.columns.name")}</TableHead>
+            <TableHead>{t("employees.columns.nationalId")}</TableHead>
+            <TableHead>{t("employees.columns.nationality")}</TableHead>
+            <TableHead className="text-end">
+              {t("employees.columns.laborExpense")}
+            </TableHead>
+            <TableHead className="text-end">
+              {t("employees.columns.saudization")}
+            </TableHead>
+            <TableHead className="text-end">
+              {t("employees.columns.occupationalHazards")}
+            </TableHead>
+            <TableHead className="text-end">
+              {t("employees.columns.saudiSalaries")}
+            </TableHead>
             <TableHead className="w-0">
-              <span className="sr-only">Actions</span>
+              <span className="sr-only">{t("common.actions")}</span>
             </TableHead>
           </TableRow>
         </TableHeader>
@@ -43,14 +58,20 @@ export function EmployeeTable({
                 {employee.employeeName}
               </TableCell>
               <TableCell className="font-mono text-muted-foreground">
-                {maskNationalId(employee.nationalId)}
+                <bdi>{maskNationalId(employee.nationalId)}</bdi>
               </TableCell>
-              <TableCell>{employee.nationality}</TableCell>
-              <TableCell className="text-right tabular-nums">
+              <TableCell>{t(`nationality.${employee.nationality}`)}</TableCell>
+              <TableCell className="text-end tabular-nums">
                 {formatSAR(employee.laborExpense)}
               </TableCell>
-              <TableCell className="text-right tabular-nums">
+              <TableCell className="text-end tabular-nums">
                 {formatSAR(employee.saudization)}
+              </TableCell>
+              <TableCell className="text-end tabular-nums">
+                {employee.occupationalHazards.toLocaleString()}
+              </TableCell>
+              <TableCell className="text-end tabular-nums">
+                {employee.saudiSalaries.toLocaleString()}
               </TableCell>
               <TableCell>
                 <div className="flex items-center justify-end gap-1">
@@ -60,7 +81,9 @@ export function EmployeeTable({
                     onClick={() => onEdit(employee)}
                   >
                     <PencilIcon />
-                    <span className="sr-only">Edit {employee.employeeName}</span>
+                    <span className="sr-only">
+                      {t("common.editItem", { name: employee.employeeName })}
+                    </span>
                   </Button>
                   <Button
                     variant="ghost"
@@ -69,7 +92,7 @@ export function EmployeeTable({
                   >
                     <Trash2Icon />
                     <span className="sr-only">
-                      Delete {employee.employeeName}
+                      {t("common.deleteItem", { name: employee.employeeName })}
                     </span>
                   </Button>
                 </div>

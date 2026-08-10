@@ -1,6 +1,7 @@
-import { useEffect } from "react"
+import { useEffect, useMemo } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Controller, useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -21,9 +22,9 @@ import {
 } from "@/components/ui/dialog"
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
-import { NATIONALITIES } from "@/lib/nationalities"
+import { NATIONALITY_CODES, type NationalityCode } from "@/lib/nationalities"
 import {
-  employeeFormSchema,
+  buildEmployeeFormSchema,
   type Employee,
   type EmployeeFormInput,
   type EmployeeFormValues,
@@ -32,9 +33,16 @@ import {
 const EMPTY_VALUES: EmployeeFormInput = {
   employeeName: "",
   nationalId: "",
-  nationality: "",
+  nationality: "" as NationalityCode,
   laborExpense: 0,
   saudization: 0,
+  occupationalHazards: 0,
+  saudiSalaries: 0,
+}
+
+interface NationalityOption {
+  value: NationalityCode
+  label: string
 }
 
 export function EmployeeFormDialog({
@@ -48,6 +56,17 @@ export function EmployeeFormDialog({
   employee?: Employee
   onSubmit: (values: EmployeeFormValues) => Promise<void>
 }) {
+  const { t } = useTranslation()
+  const schema = useMemo(() => buildEmployeeFormSchema(t), [t])
+  const nationalityOptions = useMemo<NationalityOption[]>(
+    () =>
+      NATIONALITY_CODES.map((code) => ({
+        value: code,
+        label: t(`nationality.${code}`),
+      })),
+    [t]
+  )
+
   const {
     control,
     register,
@@ -55,7 +74,7 @@ export function EmployeeFormDialog({
     reset,
     formState: { errors, isSubmitting },
   } = useForm<EmployeeFormInput, unknown, EmployeeFormValues>({
-    resolver: zodResolver(employeeFormSchema),
+    resolver: zodResolver(schema),
     defaultValues: EMPTY_VALUES,
   })
 
@@ -74,19 +93,23 @@ export function EmployeeFormDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md" closeLabel={t("common.close")}>
         <DialogHeader>
-          <DialogTitle>{isEdit ? "Edit Employee" : "Add Employee"}</DialogTitle>
+          <DialogTitle>
+            {isEdit ? t("employees.form.editTitle") : t("employees.form.addTitle")}
+          </DialogTitle>
           <DialogDescription>
             {isEdit
-              ? "Update this employee's details."
-              : "Enter the details for the new employee."}
+              ? t("employees.form.editDescription")
+              : t("employees.form.addDescription")}
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit(handleFormSubmit)} noValidate>
           <FieldGroup>
             <Field>
-              <FieldLabel htmlFor="employeeName">Employee Name</FieldLabel>
+              <FieldLabel htmlFor="employeeName">
+                {t("employees.form.employeeName")}
+              </FieldLabel>
               <Input
                 id="employeeName"
                 aria-invalid={!!errors.employeeName}
@@ -96,7 +119,9 @@ export function EmployeeFormDialog({
             </Field>
 
             <Field>
-              <FieldLabel htmlFor="nationalId">National ID / Iqama</FieldLabel>
+              <FieldLabel htmlFor="nationalId">
+                {t("employees.form.nationalId")}
+              </FieldLabel>
               <Input
                 id="nationalId"
                 inputMode="numeric"
@@ -111,23 +136,34 @@ export function EmployeeFormDialog({
               name="nationality"
               render={({ field, fieldState }) => (
                 <Field>
-                  <FieldLabel htmlFor="nationality">Nationality</FieldLabel>
+                  <FieldLabel htmlFor="nationality">
+                    {t("employees.form.nationality")}
+                  </FieldLabel>
                   <Combobox
-                    items={NATIONALITIES}
-                    value={field.value || null}
-                    onValueChange={(value) => field.onChange(value ?? "")}
+                    items={nationalityOptions}
+                    itemToStringLabel={(item: NationalityOption) => item.label}
+                    value={
+                      nationalityOptions.find(
+                        (option) => option.value === field.value
+                      ) ?? null
+                    }
+                    onValueChange={(value: NationalityOption | null) =>
+                      field.onChange(value?.value ?? "")
+                    }
                   >
                     <ComboboxInput
                       id="nationality"
-                      placeholder="Select nationality"
+                      placeholder={t("employees.form.selectNationality")}
                       aria-invalid={!!fieldState.error}
                     />
                     <ComboboxContent>
-                      <ComboboxEmpty>No nationality found.</ComboboxEmpty>
+                      <ComboboxEmpty>
+                        {t("employees.form.noNationalityFound")}
+                      </ComboboxEmpty>
                       <ComboboxList>
-                        {(item: string) => (
-                          <ComboboxItem key={item} value={item}>
-                            {item}
+                        {(item: NationalityOption) => (
+                          <ComboboxItem key={item.value} value={item}>
+                            {item.label}
                           </ComboboxItem>
                         )}
                       </ComboboxList>
@@ -141,7 +177,7 @@ export function EmployeeFormDialog({
             <div className="grid grid-cols-2 gap-3">
               <Field>
                 <FieldLabel htmlFor="laborExpense">
-                  Labor Expense (SAR)
+                  {t("employees.form.laborExpense")}
                 </FieldLabel>
                 <Input
                   id="laborExpense"
@@ -156,7 +192,9 @@ export function EmployeeFormDialog({
               </Field>
 
               <Field>
-                <FieldLabel htmlFor="saudization">Saudization (SAR)</FieldLabel>
+                <FieldLabel htmlFor="saudization">
+                  {t("employees.form.saudization")}
+                </FieldLabel>
                 <Input
                   id="saudization"
                   type="number"
@@ -169,6 +207,40 @@ export function EmployeeFormDialog({
                 <FieldError errors={[errors.saudization]} />
               </Field>
             </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <Field>
+                <FieldLabel htmlFor="occupationalHazards">
+                  {t("employees.form.occupationalHazards")}
+                </FieldLabel>
+                <Input
+                  id="occupationalHazards"
+                  type="number"
+                  inputMode="numeric"
+                  step="1"
+                  min="0"
+                  aria-invalid={!!errors.occupationalHazards}
+                  {...register("occupationalHazards")}
+                />
+                <FieldError errors={[errors.occupationalHazards]} />
+              </Field>
+
+              <Field>
+                <FieldLabel htmlFor="saudiSalaries">
+                  {t("employees.form.saudiSalaries")}
+                </FieldLabel>
+                <Input
+                  id="saudiSalaries"
+                  type="number"
+                  inputMode="numeric"
+                  step="1"
+                  min="0"
+                  aria-invalid={!!errors.saudiSalaries}
+                  {...register("saudiSalaries")}
+                />
+                <FieldError errors={[errors.saudiSalaries]} />
+              </Field>
+            </div>
           </FieldGroup>
 
           <DialogFooter className="mt-4">
@@ -177,14 +249,14 @@ export function EmployeeFormDialog({
               variant="outline"
               onClick={() => onOpenChange(false)}
             >
-              Cancel
+              {t("common.cancel")}
             </Button>
             <Button type="submit" disabled={isSubmitting}>
               {isSubmitting
-                ? "Saving…"
+                ? t("common.saving")
                 : isEdit
-                  ? "Save changes"
-                  : "Add employee"}
+                  ? t("common.saveChanges")
+                  : t("employees.form.submitAdd")}
             </Button>
           </DialogFooter>
         </form>

@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react"
 import { HandCoinsIcon, PlusIcon } from "lucide-react"
+import { useTranslation } from "react-i18next"
 import { toast } from "sonner"
 
 import { ConfirmDeleteDialog } from "@/components/common/ConfirmDeleteDialog"
@@ -18,10 +19,12 @@ import {
   updateDebt,
 } from "@/data/debts"
 import { useCollection } from "@/hooks/useCollection"
-import { formatSAR } from "@/lib/format"
+import { useFormat } from "@/i18n/useFormat"
 import type { Debt, DebtFormValues } from "@/schemas/debt"
 
 export function DebtsPage() {
+  const { t } = useTranslation()
+  const { formatSAR } = useFormat()
   const { items, loading, create, update, remove } = useCollection<
     Debt,
     DebtFormValues
@@ -70,10 +73,10 @@ export function DebtsPage() {
   async function handleSubmit(values: DebtFormValues) {
     if (editingDebt) {
       await update(editingDebt.id, values)
-      toast.success("Debt updated")
+      toast.success(t("debts.updated"))
     } else {
       await create(values)
-      toast.success("Debt added")
+      toast.success(t("debts.added"))
     }
   }
 
@@ -82,7 +85,7 @@ export function DebtsPage() {
     setIsDeleting(true)
     try {
       await remove(deletingDebt.id)
-      toast.success("Debt deleted")
+      toast.success(t("debts.deleted"))
       setDeletingDebt(null)
     } finally {
       setIsDeleting(false)
@@ -92,12 +95,12 @@ export function DebtsPage() {
   return (
     <div>
       <PageHeader
-        title="Debts"
-        description="Track outstanding amounts the company owes to customers."
+        title={t("debts.title")}
+        description={t("debts.description")}
         action={
           <Button onClick={openAddDialog}>
             <PlusIcon />
-            Add Debt
+            {t("debts.add")}
           </Button>
         }
       />
@@ -105,17 +108,23 @@ export function DebtsPage() {
       {!loading && items.length > 0 && (
         <div className="mb-4 grid grid-cols-2 gap-3 sm:max-w-2xl sm:grid-cols-3">
           <div className="rounded-xl border p-3">
-            <p className="text-xs text-muted-foreground">Customers</p>
+            <p className="text-xs text-muted-foreground">
+              {t("debts.customers")}
+            </p>
             <p className="text-lg font-semibold">{totals.count}</p>
           </div>
           <div className="rounded-xl border p-3">
-            <p className="text-xs text-muted-foreground">Total Owed</p>
+            <p className="text-xs text-muted-foreground">
+              {t("debts.totalOwed")}
+            </p>
             <p className="text-lg font-semibold">
               {formatSAR(totals.totalOwed)}
             </p>
           </div>
           <div className="rounded-xl border p-3">
-            <p className="text-xs text-muted-foreground">Largest Debt</p>
+            <p className="text-xs text-muted-foreground">
+              {t("debts.largestDebt")}
+            </p>
             <p className="text-lg font-semibold">
               {formatSAR(totals.largest)}
             </p>
@@ -126,7 +135,7 @@ export function DebtsPage() {
       <DataToolbar
         searchValue={search}
         onSearchChange={setSearch}
-        searchPlaceholder="Search by customer or note…"
+        searchPlaceholder={t("debts.searchPlaceholder")}
       />
 
       {loading ? (
@@ -138,17 +147,21 @@ export function DebtsPage() {
       ) : filtered.length === 0 ? (
         <EmptyState
           icon={HandCoinsIcon}
-          title={items.length === 0 ? "No debts yet" : "No matches found"}
+          title={
+            items.length === 0
+              ? t("debts.emptyTitle")
+              : t("debts.noMatchesTitle")
+          }
           description={
             items.length === 0
-              ? "Add your first debt to get started."
-              : "Try a different search term."
+              ? t("debts.emptyDescription")
+              : t("debts.noMatchesDescription")
           }
           action={
             items.length === 0 ? (
               <Button onClick={openAddDialog}>
                 <PlusIcon />
-                Add Debt
+                {t("debts.add")}
               </Button>
             ) : undefined
           }
@@ -171,10 +184,13 @@ export function DebtsPage() {
       <ConfirmDeleteDialog
         open={!!deletingDebt}
         onOpenChange={(open) => !open && setDeletingDebt(null)}
-        title="Delete debt?"
+        title={t("debts.deleteTitle")}
         description={
           deletingDebt
-            ? `This will permanently remove the ${formatSAR(deletingDebt.debtWeOwe)} debt owed to ${deletingDebt.customer} from your records.`
+            ? t("debts.deleteDescription", {
+                amount: formatSAR(deletingDebt.debtWeOwe),
+                customer: deletingDebt.customer,
+              })
             : ""
         }
         onConfirm={handleConfirmDelete}

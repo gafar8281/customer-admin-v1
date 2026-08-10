@@ -1,14 +1,27 @@
+import type { TFunction } from "i18next"
 import { z } from "zod"
 
-export function sarAmount(label: string) {
+export function sarAmount(t: TFunction, fieldKey: string) {
+  const field = t(`validation.fields.${fieldKey}`)
   return z.preprocess(
     (value) => (value === "" || value === null ? undefined : value),
     z
-      .coerce.number({ error: `${label} is required` })
-      .nonnegative(`${label} cannot be negative`)
+      .coerce.number({ error: t("validation.amountRequired", { field }) })
+      .nonnegative(t("validation.amountNegative", { field }))
   )
 }
 
-export const PAYMENT_OPTIONS = ["Monthly", "Half yearly", "Yearly"] as const
+export function integerCount(t: TFunction, fieldKey: string) {
+  const field = t(`validation.fields.${fieldKey}`)
+  return z.preprocess(
+    (value) => (value === "" || value === null ? undefined : value),
+    z
+      .coerce.number({ error: t("validation.amountRequired", { field }) })
+      .int(t("validation.amountInteger", { field }))
+      .nonnegative(t("validation.amountNegative", { field }))
+  )
+}
+
+export const PAYMENT_OPTIONS = ["monthly", "half_yearly", "yearly"] as const
 
 export type Payment = (typeof PAYMENT_OPTIONS)[number]

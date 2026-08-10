@@ -3,7 +3,7 @@ import { createEmployeeSeed } from "@/mock/employees"
 import type { Employee, EmployeeFormValues } from "@/schemas/employee"
 
 const employees = createCollection<Employee, EmployeeFormValues>(
-  "cas.employees",
+  "cas.employees.v3",
   createEmployeeSeed
 )
 

@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react"
 import { BuildingIcon, PlusIcon } from "lucide-react"
+import { useTranslation } from "react-i18next"
 import { toast } from "sonner"
 
 import { ConfirmDeleteDialog } from "@/components/common/ConfirmDeleteDialog"
@@ -18,11 +19,13 @@ import {
   updateRental,
 } from "@/data/rentals"
 import { useCollection } from "@/hooks/useCollection"
-import { formatSAR } from "@/lib/format"
+import { useFormat } from "@/i18n/useFormat"
 import { getRemainingBalance } from "@/lib/rental"
 import type { Rental, RentalFormValues } from "@/schemas/rental"
 
 export function RentalsPage() {
+  const { t } = useTranslation()
+  const { formatSAR } = useFormat()
   const { items, loading, create, update, remove } = useCollection<
     Rental,
     RentalFormValues
@@ -78,10 +81,10 @@ export function RentalsPage() {
   async function handleSubmit(values: RentalFormValues) {
     if (editingRental) {
       await update(editingRental.id, values)
-      toast.success("Rental updated")
+      toast.success(t("rentals.updated"))
     } else {
       await create(values)
-      toast.success("Rental added")
+      toast.success(t("rentals.added"))
     }
   }
 
@@ -90,7 +93,7 @@ export function RentalsPage() {
     setIsDeleting(true)
     try {
       await remove(deletingRental.id)
-      toast.success("Rental deleted")
+      toast.success(t("rentals.deleted"))
       setDeletingRental(null)
     } finally {
       setIsDeleting(false)
@@ -100,12 +103,12 @@ export function RentalsPage() {
   return (
     <div>
       <PageHeader
-        title="Rentals"
-        description="Manage apartment rentals, tenants, lease renewals, and outstanding balances."
+        title={t("rentals.title")}
+        description={t("rentals.description")}
         action={
           <Button onClick={openAddDialog}>
             <PlusIcon />
-            Add Rental
+            {t("rentals.add")}
           </Button>
         }
       />
@@ -113,17 +116,23 @@ export function RentalsPage() {
       {!loading && items.length > 0 && (
         <div className="mb-4 grid grid-cols-2 gap-3 sm:max-w-2xl sm:grid-cols-3">
           <div className="rounded-xl border p-3">
-            <p className="text-xs text-muted-foreground">Units</p>
+            <p className="text-xs text-muted-foreground">
+              {t("rentals.units")}
+            </p>
             <p className="text-lg font-semibold">{totals.count}</p>
           </div>
           <div className="rounded-xl border p-3">
-            <p className="text-xs text-muted-foreground">Total Outstanding</p>
+            <p className="text-xs text-muted-foreground">
+              {t("rentals.totalOutstanding")}
+            </p>
             <p className="text-lg font-semibold">
               {formatSAR(totals.outstanding)}
             </p>
           </div>
           <div className="rounded-xl border p-3">
-            <p className="text-xs text-muted-foreground">Fully Paid</p>
+            <p className="text-xs text-muted-foreground">
+              {t("rentals.fullyPaid")}
+            </p>
             <p className="text-lg font-semibold">
               {totals.fullyPaid} / {totals.count}
             </p>
@@ -134,7 +143,7 @@ export function RentalsPage() {
       <DataToolbar
         searchValue={search}
         onSearchChange={setSearch}
-        searchPlaceholder="Search by tenant or apartment…"
+        searchPlaceholder={t("rentals.searchPlaceholder")}
       />
 
       {loading ? (
@@ -146,17 +155,21 @@ export function RentalsPage() {
       ) : filtered.length === 0 ? (
         <EmptyState
           icon={BuildingIcon}
-          title={items.length === 0 ? "No rentals yet" : "No matches found"}
+          title={
+            items.length === 0
+              ? t("rentals.emptyTitle")
+              : t("rentals.noMatchesTitle")
+          }
           description={
             items.length === 0
-              ? "Add your first rental to get started."
-              : "Try a different search term."
+              ? t("rentals.emptyDescription")
+              : t("rentals.noMatchesDescription")
           }
           action={
             items.length === 0 ? (
               <Button onClick={openAddDialog}>
                 <PlusIcon />
-                Add Rental
+                {t("rentals.add")}
               </Button>
             ) : undefined
           }
@@ -179,10 +192,13 @@ export function RentalsPage() {
       <ConfirmDeleteDialog
         open={!!deletingRental}
         onOpenChange={(open) => !open && setDeletingRental(null)}
-        title="Delete rental?"
+        title={t("rentals.deleteTitle")}
         description={
           deletingRental
-            ? `This will permanently remove apartment ${deletingRental.apartmentNumber} (${deletingRental.tenantName}) from your records.`
+            ? t("rentals.deleteDescription", {
+                apartment: deletingRental.apartmentNumber,
+                tenant: deletingRental.tenantName,
+              })
             : ""
         }
         onConfirm={handleConfirmDelete}

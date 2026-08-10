@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next"
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -24,6 +26,8 @@ export function ConfirmDeleteDialog({
   onConfirm: () => void
   isPending?: boolean
 }) {
+  const { t } = useTranslation()
+
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent>
@@ -32,13 +36,15 @@ export function ConfirmDeleteDialog({
           <AlertDialogDescription>{description}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel disabled={isPending}>Cancel</AlertDialogCancel>
+          <AlertDialogCancel disabled={isPending}>
+            {t("common.cancel")}
+          </AlertDialogCancel>
           <AlertDialogAction
             variant="destructive"
             disabled={isPending}
             onClick={onConfirm}
           >
-            {isPending ? "Deleting…" : "Delete"}
+            {isPending ? t("common.deleting") : t("common.delete")}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

@@ -1,6 +1,7 @@
-import { useEffect } from "react"
+import { useEffect, useMemo } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Controller, useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -22,7 +23,7 @@ import {
 } from "@/components/ui/select"
 import { PAYMENT_OPTIONS } from "@/schemas/common"
 import {
-  shopFormSchema,
+  buildShopFormSchema,
   type Shop,
   type ShopFormInput,
   type ShopFormValues,
@@ -33,7 +34,7 @@ const EMPTY_VALUES: ShopFormInput = {
   amount: 0,
   shopLeaseExpiryDate: "",
   rentAmount: 0,
-  payment: "Monthly",
+  payment: "monthly",
 }
 
 export function ShopFormDialog({
@@ -47,6 +48,9 @@ export function ShopFormDialog({
   shop?: Shop
   onSubmit: (values: ShopFormValues) => Promise<void>
 }) {
+  const { t } = useTranslation()
+  const schema = useMemo(() => buildShopFormSchema(t), [t])
+
   const {
     control,
     register,
@@ -54,7 +58,7 @@ export function ShopFormDialog({
     reset,
     formState: { errors, isSubmitting },
   } = useForm<ShopFormInput, unknown, ShopFormValues>({
-    resolver: zodResolver(shopFormSchema),
+    resolver: zodResolver(schema),
     defaultValues: EMPTY_VALUES,
   })
 
@@ -73,19 +77,23 @@ export function ShopFormDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md" closeLabel={t("common.close")}>
         <DialogHeader>
-          <DialogTitle>{isEdit ? "Edit Shop" : "Add Shop"}</DialogTitle>
+          <DialogTitle>
+            {isEdit ? t("shops.form.editTitle") : t("shops.form.addTitle")}
+          </DialogTitle>
           <DialogDescription>
             {isEdit
-              ? "Update this shop's lease and billing details."
-              : "Enter the details for the new shop."}
+              ? t("shops.form.editDescription")
+              : t("shops.form.addDescription")}
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit(handleFormSubmit)} noValidate>
           <FieldGroup>
             <Field>
-              <FieldLabel htmlFor="shopName">Shop Name</FieldLabel>
+              <FieldLabel htmlFor="shopName">
+                {t("shops.form.shopName")}
+              </FieldLabel>
               <Input
                 id="shopName"
                 aria-invalid={!!errors.shopName}
@@ -95,9 +103,7 @@ export function ShopFormDialog({
             </Field>
 
             <Field>
-              <FieldLabel htmlFor="amount">
-                Total Contract Value (SAR)
-              </FieldLabel>
+              <FieldLabel htmlFor="amount">{t("shops.form.amount")}</FieldLabel>
               <Input
                 id="amount"
                 type="number"
@@ -112,7 +118,9 @@ export function ShopFormDialog({
 
             <div className="grid grid-cols-2 gap-3">
               <Field>
-                <FieldLabel htmlFor="rentAmount">Rent Amount (SAR)</FieldLabel>
+                <FieldLabel htmlFor="rentAmount">
+                  {t("shops.form.rentAmount")}
+                </FieldLabel>
                 <Input
                   id="rentAmount"
                   type="number"
@@ -130,7 +138,9 @@ export function ShopFormDialog({
                 name="payment"
                 render={({ field, fieldState }) => (
                   <Field>
-                    <FieldLabel htmlFor="payment">Payment</FieldLabel>
+                    <FieldLabel htmlFor="payment">
+                      {t("shops.form.payment")}
+                    </FieldLabel>
                     <Select
                       value={field.value}
                       onValueChange={(value) => field.onChange(value)}
@@ -140,12 +150,14 @@ export function ShopFormDialog({
                         className="w-full"
                         aria-invalid={!!fieldState.error}
                       >
-                        <SelectValue placeholder="Select billing cycle" />
+                        <SelectValue
+                          placeholder={t("shops.form.selectBillingCycle")}
+                        />
                       </SelectTrigger>
                       <SelectContent>
                         {PAYMENT_OPTIONS.map((option) => (
                           <SelectItem key={option} value={option}>
-                            {option}
+                            {t(`payment.${option}`)}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -158,7 +170,7 @@ export function ShopFormDialog({
 
             <Field>
               <FieldLabel htmlFor="shopLeaseExpiryDate">
-                Lease Expiry Date
+                {t("shops.form.shopLeaseExpiryDate")}
               </FieldLabel>
               <Input
                 id="shopLeaseExpiryDate"
@@ -176,10 +188,14 @@ export function ShopFormDialog({
               variant="outline"
               onClick={() => onOpenChange(false)}
             >
-              Cancel
+              {t("common.cancel")}
             </Button>
             <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Saving…" : isEdit ? "Save changes" : "Add shop"}
+              {isSubmitting
+                ? t("common.saving")
+                : isEdit
+                  ? t("common.saveChanges")
+                  : t("shops.form.submitAdd")}
             </Button>
           </DialogFooter>
         </form>

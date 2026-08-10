@@ -20,21 +20,15 @@ export function getLeaseStatus(iso: string): LeaseStatus {
   return "active"
 }
 
-export const LEASE_STATUS_META: Record<
-  LeaseStatus,
-  { label: string; className: string }
-> = {
+export const LEASE_STATUS_META: Record<LeaseStatus, { className: string }> = {
   expired: {
-    label: "Expired",
     className: "bg-destructive/10 text-destructive",
   },
   "expiring-soon": {
-    label: "Expiring soon",
     className:
       "bg-amber-500/10 text-amber-700 dark:bg-amber-500/15 dark:text-amber-400",
   },
   active: {
-    label: "Active",
     className: "bg-emerald-500/10 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-400",
   },
 }

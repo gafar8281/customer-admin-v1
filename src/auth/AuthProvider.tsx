@@ -24,7 +24,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       password === MOCK_CREDENTIALS.password
 
     if (!isValid) {
-      return "Invalid email or password."
+      return "invalid_credentials"
     }
 
     const nextUser: AuthUser = { email: MOCK_CREDENTIALS.email }

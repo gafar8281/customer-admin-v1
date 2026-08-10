@@ -1,4 +1,5 @@
 import { PencilIcon, Trash2Icon } from "lucide-react"
+import { useTranslation } from "react-i18next"
 
 import { LeaseStatusBadge } from "@/components/common/LeaseStatusBadge"
 import { Button } from "@/components/ui/button"
@@ -10,7 +11,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { formatDate, formatSAR } from "@/lib/format"
+import { useFormat } from "@/i18n/useFormat"
 import { getRemainingBalance } from "@/lib/rental"
 import { cn } from "@/lib/utils"
 import type { Rental } from "@/schemas/rental"
@@ -24,6 +25,9 @@ export function RentalTable({
   onEdit: (rental: Rental) => void
   onDelete: (rental: Rental) => void
 }) {
+  const { t } = useTranslation()
+  const { formatSAR, formatDate } = useFormat()
+
   const sorted = [...rentals].sort(
     (a, b) =>
       new Date(a.leaseExpiryDate).getTime() -
@@ -35,14 +39,18 @@ export function RentalTable({
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Apartment</TableHead>
-            <TableHead>Tenant</TableHead>
-            <TableHead className="text-right">Total Amount</TableHead>
-            <TableHead className="text-right">Paid</TableHead>
-            <TableHead className="text-right">Remaining</TableHead>
-            <TableHead>Lease Expiry</TableHead>
+            <TableHead>{t("rentals.columns.apartment")}</TableHead>
+            <TableHead>{t("rentals.columns.tenant")}</TableHead>
+            <TableHead className="text-end">
+              {t("rentals.columns.totalAmount")}
+            </TableHead>
+            <TableHead className="text-end">{t("rentals.columns.paid")}</TableHead>
+            <TableHead className="text-end">
+              {t("rentals.columns.remaining")}
+            </TableHead>
+            <TableHead>{t("rentals.columns.leaseExpiry")}</TableHead>
             <TableHead className="w-0">
-              <span className="sr-only">Actions</span>
+              <span className="sr-only">{t("common.actions")}</span>
             </TableHead>
           </TableRow>
         </TableHeader>
@@ -59,15 +67,15 @@ export function RentalTable({
                   {rental.apartmentNumber}
                 </TableCell>
                 <TableCell>{rental.tenantName}</TableCell>
-                <TableCell className="text-right tabular-nums">
+                <TableCell className="text-end tabular-nums">
                   {formatSAR(rental.totalAmount)}
                 </TableCell>
-                <TableCell className="text-right tabular-nums">
+                <TableCell className="text-end tabular-nums">
                   {formatSAR(rental.paidAmount)}
                 </TableCell>
                 <TableCell
                   className={cn(
-                    "text-right font-medium tabular-nums",
+                    "text-end font-medium tabular-nums",
                     remaining > 0 && "text-destructive"
                   )}
                 >
@@ -88,7 +96,9 @@ export function RentalTable({
                     >
                       <PencilIcon />
                       <span className="sr-only">
-                        Edit {rental.apartmentNumber}
+                        {t("common.editItem", {
+                          name: rental.apartmentNumber,
+                        })}
                       </span>
                     </Button>
                     <Button
@@ -98,7 +108,9 @@ export function RentalTable({
                     >
                       <Trash2Icon />
                       <span className="sr-only">
-                        Delete {rental.apartmentNumber}
+                        {t("common.deleteItem", {
+                          name: rental.apartmentNumber,
+                        })}
                       </span>
                     </Button>
                   </div>

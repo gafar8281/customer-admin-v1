@@ -1,24 +1,34 @@
+import type { TFunction } from "i18next"
 import { z } from "zod"
 
-import { sarAmount } from "@/schemas/common"
+import { integerCount, sarAmount } from "@/schemas/common"
+import { NATIONALITY_CODES } from "@/lib/nationalities"
 
-export const employeeFormSchema = z.object({
-  employeeName: z
-    .string()
-    .trim()
-    .min(2, "Employee name must be at least 2 characters")
-    .max(80, "Employee name must be at most 80 characters"),
-  nationalId: z
-    .string()
-    .trim()
-    .regex(/^\d{10}$/, "National ID / Iqama must be exactly 10 digits"),
-  nationality: z.string().trim().min(1, "Nationality is required"),
-  laborExpense: sarAmount("Labor expense"),
-  saudization: sarAmount("Saudization"),
-})
+export function buildEmployeeFormSchema(t: TFunction) {
+  return z.object({
+    employeeName: z
+      .string()
+      .trim()
+      .min(2, t("validation.employeeNameMin"))
+      .max(80, t("validation.employeeNameMax")),
+    nationalId: z
+      .string()
+      .trim()
+      .regex(/^\d{10}$/, t("validation.nationalIdFormat")),
+    nationality: z.enum(NATIONALITY_CODES, {
+      error: t("validation.nationalityRequired"),
+    }),
+    laborExpense: sarAmount(t, "laborExpense"),
+    saudization: sarAmount(t, "saudization"),
+    occupationalHazards: integerCount(t, "occupationalHazards"),
+    saudiSalaries: integerCount(t, "saudiSalaries"),
+  })
+}
 
-export type EmployeeFormInput = z.input<typeof employeeFormSchema>
-export type EmployeeFormValues = z.output<typeof employeeFormSchema>
+export type EmployeeFormInput = z.input<ReturnType<typeof buildEmployeeFormSchema>>
+export type EmployeeFormValues = z.output<
+  ReturnType<typeof buildEmployeeFormSchema>
+>
 
 export type Employee = EmployeeFormValues & {
   id: string

@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react"
 import { PlusIcon, UsersIcon } from "lucide-react"
+import { useTranslation } from "react-i18next"
 import { toast } from "sonner"
 
 import { ConfirmDeleteDialog } from "@/components/common/ConfirmDeleteDialog"
@@ -18,10 +19,12 @@ import {
   updateEmployee,
 } from "@/data/employees"
 import { useCollection } from "@/hooks/useCollection"
-import { formatSAR } from "@/lib/format"
+import { useFormat } from "@/i18n/useFormat"
 import type { Employee, EmployeeFormValues } from "@/schemas/employee"
 
 export function EmployeesPage() {
+  const { t } = useTranslation()
+  const { formatSAR } = useFormat()
   const { items, loading, create, update, remove } = useCollection<
     Employee,
     EmployeeFormValues
@@ -45,12 +48,16 @@ export function EmployeesPage() {
     const query = search.trim().toLowerCase()
     if (!query) return items
     return items.filter((employee) =>
-      [employee.employeeName, employee.nationality, employee.nationalId]
+      [
+        employee.employeeName,
+        t(`nationality.${employee.nationality}`),
+        employee.nationalId,
+      ]
         .join(" ")
         .toLowerCase()
         .includes(query)
     )
-  }, [items, search])
+  }, [items, search, t])
 
   const totals = useMemo(
     () => ({
@@ -73,10 +80,10 @@ export function EmployeesPage() {
   async function handleSubmit(values: EmployeeFormValues) {
     if (editingEmployee) {
       await update(editingEmployee.id, values)
-      toast.success("Employee updated")
+      toast.success(t("employees.updated"))
     } else {
       await create(values)
-      toast.success("Employee added")
+      toast.success(t("employees.added"))
     }
   }
 
@@ -85,7 +92,7 @@ export function EmployeesPage() {
     setIsDeleting(true)
     try {
       await remove(deletingEmployee.id)
-      toast.success("Employee deleted")
+      toast.success(t("employees.deleted"))
       setDeletingEmployee(null)
     } finally {
       setIsDeleting(false)
@@ -95,12 +102,12 @@ export function EmployeesPage() {
   return (
     <div>
       <PageHeader
-        title="Employees"
-        description="Manage internal employee records, labor expenses, and Saudization contributions."
+        title={t("employees.title")}
+        description={t("employees.description")}
         action={
           <Button onClick={openAddDialog}>
             <PlusIcon />
-            Add Employee
+            {t("employees.add")}
           </Button>
         }
       />
@@ -108,12 +115,14 @@ export function EmployeesPage() {
       {!loading && items.length > 0 && (
         <div className="mb-4 grid grid-cols-2 gap-3 sm:max-w-md">
           <div className="rounded-xl border p-3">
-            <p className="text-xs text-muted-foreground">Headcount</p>
+            <p className="text-xs text-muted-foreground">
+              {t("employees.headcount")}
+            </p>
             <p className="text-lg font-semibold">{totals.count}</p>
           </div>
           <div className="rounded-xl border p-3">
             <p className="text-xs text-muted-foreground">
-              Total Labor Expense
+              {t("employees.totalLaborExpense")}
             </p>
             <p className="text-lg font-semibold">
               {formatSAR(totals.laborExpense)}
@@ -125,7 +134,7 @@ export function EmployeesPage() {
       <DataToolbar
         searchValue={search}
         onSearchChange={setSearch}
-        searchPlaceholder="Search by name, nationality, or ID…"
+        searchPlaceholder={t("employees.searchPlaceholder")}
       />
 
       {loading ? (
@@ -137,17 +146,21 @@ export function EmployeesPage() {
       ) : filtered.length === 0 ? (
         <EmptyState
           icon={UsersIcon}
-          title={items.length === 0 ? "No employees yet" : "No matches found"}
+          title={
+            items.length === 0
+              ? t("employees.emptyTitle")
+              : t("employees.noMatchesTitle")
+          }
           description={
             items.length === 0
-              ? "Add your first employee to get started."
-              : "Try a different search term."
+              ? t("employees.emptyDescription")
+              : t("employees.noMatchesDescription")
           }
           action={
             items.length === 0 ? (
               <Button onClick={openAddDialog}>
                 <PlusIcon />
-                Add Employee
+                {t("employees.add")}
               </Button>
             ) : undefined
           }
@@ -170,10 +183,12 @@ export function EmployeesPage() {
       <ConfirmDeleteDialog
         open={!!deletingEmployee}
         onOpenChange={(open) => !open && setDeletingEmployee(null)}
-        title="Delete employee?"
+        title={t("employees.deleteTitle")}
         description={
           deletingEmployee
-            ? `This will permanently remove ${deletingEmployee.employeeName} from your records.`
+            ? t("employees.deleteDescription", {
+                name: deletingEmployee.employeeName,
+              })
             : ""
         }
         onConfirm={handleConfirmDelete}

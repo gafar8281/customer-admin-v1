@@ -29,7 +29,7 @@ export function useCollection<T extends { id: string }, Input>({
         const data = await list()
         if (!cancelled) setItems(data)
       } catch {
-        if (!cancelled) setError("Failed to load data.")
+        if (!cancelled) setError("load_failed")
       } finally {
         if (!cancelled) setLoading(false)
       }

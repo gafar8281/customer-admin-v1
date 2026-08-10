@@ -1,4 +1,5 @@
 import { SearchIcon } from "lucide-react"
+import { useTranslation } from "react-i18next"
 
 import {
   InputGroup,
@@ -9,7 +10,7 @@ import {
 export function DataToolbar({
   searchValue,
   onSearchChange,
-  searchPlaceholder = "Search…",
+  searchPlaceholder,
   children,
 }: {
   searchValue: string
@@ -17,6 +18,8 @@ export function DataToolbar({
   searchPlaceholder?: string
   children?: React.ReactNode
 }) {
+  const { t } = useTranslation()
+
   return (
     <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
       <InputGroup className="sm:max-w-xs">
@@ -24,7 +27,7 @@ export function DataToolbar({
           <SearchIcon />
         </InputGroupAddon>
         <InputGroupInput
-          placeholder={searchPlaceholder}
+          placeholder={searchPlaceholder ?? t("common.search")}
           value={searchValue}
           onChange={(event) => onSearchChange(event.target.value)}
         />

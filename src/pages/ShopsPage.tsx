@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react"
 import { AlertTriangleIcon, PlusIcon, StoreIcon } from "lucide-react"
+import { useTranslation } from "react-i18next"
 import { toast } from "sonner"
 
 import { ConfirmDeleteDialog } from "@/components/common/ConfirmDeleteDialog"
@@ -23,6 +24,7 @@ import { getLeaseStatus } from "@/lib/lease"
 import type { Shop, ShopFormValues } from "@/schemas/shop"
 
 export function ShopsPage() {
+  const { t } = useTranslation()
   const { items, loading, create, update, remove } = useCollection<
     Shop,
     ShopFormValues
@@ -68,10 +70,10 @@ export function ShopsPage() {
   async function handleSubmit(values: ShopFormValues) {
     if (editingShop) {
       await update(editingShop.id, values)
-      toast.success("Shop updated")
+      toast.success(t("shops.updated"))
     } else {
       await create(values)
-      toast.success("Shop added")
+      toast.success(t("shops.added"))
     }
   }
 
@@ -80,7 +82,7 @@ export function ShopsPage() {
     setIsDeleting(true)
     try {
       await remove(deletingShop.id)
-      toast.success("Shop deleted")
+      toast.success(t("shops.deleted"))
       setDeletingShop(null)
     } finally {
       setIsDeleting(false)
@@ -90,12 +92,12 @@ export function ShopsPage() {
   return (
     <div>
       <PageHeader
-        title="Shops"
-        description="Manage leased retail and office units, rent, and lease renewals."
+        title={t("shops.title")}
+        description={t("shops.description")}
         action={
           <Button onClick={openAddDialog}>
             <PlusIcon />
-            Add Shop
+            {t("shops.add")}
           </Button>
         }
       />
@@ -104,11 +106,10 @@ export function ShopsPage() {
         <Alert variant="destructive" className="mb-4">
           <AlertTriangleIcon />
           <AlertTitle>
-            {atRiskCount} lease{atRiskCount === 1 ? "" : "s"} need
-            {atRiskCount === 1 ? "s" : ""} attention
+            {t("shops.leasesAtRisk", { count: atRiskCount })}
           </AlertTitle>
           <AlertDescription>
-            Expired or expiring within the next 30 days.
+            {t("shops.leasesAtRiskDescription")}
           </AlertDescription>
         </Alert>
       )}
@@ -116,7 +117,7 @@ export function ShopsPage() {
       <DataToolbar
         searchValue={search}
         onSearchChange={setSearch}
-        searchPlaceholder="Search by shop name…"
+        searchPlaceholder={t("shops.searchPlaceholder")}
       />
 
       {loading ? (
@@ -128,17 +129,21 @@ export function ShopsPage() {
       ) : filtered.length === 0 ? (
         <EmptyState
           icon={StoreIcon}
-          title={items.length === 0 ? "No shops yet" : "No matches found"}
+          title={
+            items.length === 0
+              ? t("shops.emptyTitle")
+              : t("shops.noMatchesTitle")
+          }
           description={
             items.length === 0
-              ? "Add your first shop to get started."
-              : "Try a different search term."
+              ? t("shops.emptyDescription")
+              : t("shops.noMatchesDescription")
           }
           action={
             items.length === 0 ? (
               <Button onClick={openAddDialog}>
                 <PlusIcon />
-                Add Shop
+                {t("shops.add")}
               </Button>
             ) : undefined
           }
@@ -161,10 +166,10 @@ export function ShopsPage() {
       <ConfirmDeleteDialog
         open={!!deletingShop}
         onOpenChange={(open) => !open && setDeletingShop(null)}
-        title="Delete shop?"
+        title={t("shops.deleteTitle")}
         description={
           deletingShop
-            ? `This will permanently remove ${deletingShop.shopName} from your records.`
+            ? t("shops.deleteDescription", { name: deletingShop.shopName })
             : ""
         }
         onConfirm={handleConfirmDelete}

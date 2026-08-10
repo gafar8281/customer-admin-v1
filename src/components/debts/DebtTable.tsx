@@ -1,4 +1,5 @@
 import { PencilIcon, Trash2Icon } from "lucide-react"
+import { useTranslation } from "react-i18next"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -9,7 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { formatSAR } from "@/lib/format"
+import { useFormat } from "@/i18n/useFormat"
 import { cn } from "@/lib/utils"
 import type { Debt } from "@/schemas/debt"
 
@@ -22,6 +23,9 @@ export function DebtTable({
   onEdit: (debt: Debt) => void
   onDelete: (debt: Debt) => void
 }) {
+  const { t } = useTranslation()
+  const { formatSAR } = useFormat()
+
   const sorted = [...debts].sort((a, b) => b.debtWeOwe - a.debtWeOwe)
 
   return (
@@ -29,11 +33,13 @@ export function DebtTable({
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Customer</TableHead>
-            <TableHead>Note</TableHead>
-            <TableHead className="text-right">Debt We Owe</TableHead>
+            <TableHead>{t("debts.columns.customer")}</TableHead>
+            <TableHead>{t("debts.columns.note")}</TableHead>
+            <TableHead className="text-end">
+              {t("debts.columns.debtWeOwe")}
+            </TableHead>
             <TableHead className="w-0">
-              <span className="sr-only">Actions</span>
+              <span className="sr-only">{t("common.actions")}</span>
             </TableHead>
           </TableRow>
         </TableHeader>
@@ -46,7 +52,7 @@ export function DebtTable({
               </TableCell>
               <TableCell
                 className={cn(
-                  "text-right font-medium tabular-nums",
+                  "text-end font-medium tabular-nums",
                   debt.debtWeOwe > 0 && "text-destructive"
                 )}
               >
@@ -60,7 +66,9 @@ export function DebtTable({
                     onClick={() => onEdit(debt)}
                   >
                     <PencilIcon />
-                    <span className="sr-only">Edit {debt.customer}</span>
+                    <span className="sr-only">
+                      {t("common.editItem", { name: debt.customer })}
+                    </span>
                   </Button>
                   <Button
                     variant="ghost"
@@ -68,7 +76,9 @@ export function DebtTable({
                     onClick={() => onDelete(debt)}
                   >
                     <Trash2Icon />
-                    <span className="sr-only">Delete {debt.customer}</span>
+                    <span className="sr-only">
+                      {t("common.deleteItem", { name: debt.customer })}
+                    </span>
                   </Button>
                 </div>
               </TableCell>

@@ -1,6 +1,7 @@
-import { useEffect } from "react"
+import { useEffect, useMemo } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm, useWatch } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -13,10 +14,10 @@ import {
 } from "@/components/ui/dialog"
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
-import { formatSAR } from "@/lib/format"
+import { useFormat } from "@/i18n/useFormat"
 import { getRemainingBalance } from "@/lib/rental"
 import {
-  rentalFormSchema,
+  buildRentalFormSchema,
   type Rental,
   type RentalFormInput,
   type RentalFormValues,
@@ -41,6 +42,10 @@ export function RentalFormDialog({
   rental?: Rental
   onSubmit: (values: RentalFormValues) => Promise<void>
 }) {
+  const { t } = useTranslation()
+  const { formatSAR } = useFormat()
+  const schema = useMemo(() => buildRentalFormSchema(t), [t])
+
   const {
     control,
     register,
@@ -48,7 +53,7 @@ export function RentalFormDialog({
     reset,
     formState: { errors, isSubmitting },
   } = useForm<RentalFormInput, unknown, RentalFormValues>({
-    resolver: zodResolver(rentalFormSchema),
+    resolver: zodResolver(schema),
     defaultValues: EMPTY_VALUES,
   })
 
@@ -74,19 +79,23 @@ export function RentalFormDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md" closeLabel={t("common.close")}>
         <DialogHeader>
-          <DialogTitle>{isEdit ? "Edit Rental" : "Add Rental"}</DialogTitle>
+          <DialogTitle>
+            {isEdit ? t("rentals.form.editTitle") : t("rentals.form.addTitle")}
+          </DialogTitle>
           <DialogDescription>
             {isEdit
-              ? "Update this tenant's lease and payment details."
-              : "Enter the details for the new rental."}
+              ? t("rentals.form.editDescription")
+              : t("rentals.form.addDescription")}
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit(handleFormSubmit)} noValidate>
           <FieldGroup>
             <Field>
-              <FieldLabel htmlFor="tenantName">Tenant Name</FieldLabel>
+              <FieldLabel htmlFor="tenantName">
+                {t("rentals.form.tenantName")}
+              </FieldLabel>
               <Input
                 id="tenantName"
                 aria-invalid={!!errors.tenantName}
@@ -97,7 +106,7 @@ export function RentalFormDialog({
 
             <Field>
               <FieldLabel htmlFor="apartmentNumber">
-                Apartment Number
+                {t("rentals.form.apartmentNumber")}
               </FieldLabel>
               <Input
                 id="apartmentNumber"
@@ -109,7 +118,7 @@ export function RentalFormDialog({
 
             <Field>
               <FieldLabel htmlFor="leaseExpiryDate">
-                Lease Expiry Date
+                {t("rentals.form.leaseExpiryDate")}
               </FieldLabel>
               <Input
                 id="leaseExpiryDate"
@@ -123,7 +132,7 @@ export function RentalFormDialog({
             <div className="grid grid-cols-2 gap-3">
               <Field>
                 <FieldLabel htmlFor="totalAmount">
-                  Total Amount (SAR)
+                  {t("rentals.form.totalAmount")}
                 </FieldLabel>
                 <Input
                   id="totalAmount"
@@ -139,7 +148,7 @@ export function RentalFormDialog({
 
               <Field>
                 <FieldLabel htmlFor="paidAmount">
-                  Amount Paid (SAR)
+                  {t("rentals.form.paidAmount")}
                 </FieldLabel>
                 <Input
                   id="paidAmount"
@@ -156,7 +165,7 @@ export function RentalFormDialog({
 
             <div className="flex items-center justify-between rounded-lg border bg-muted/40 px-3 py-2">
               <span className="text-sm text-muted-foreground">
-                Remaining Balance
+                {t("rentals.remainingBalance")}
               </span>
               <span className="text-sm font-semibold tabular-nums">
                 {formatSAR(remaining)}
@@ -170,10 +179,14 @@ export function RentalFormDialog({
               variant="outline"
               onClick={() => onOpenChange(false)}
             >
-              Cancel
+              {t("common.cancel")}
             </Button>
             <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Saving…" : isEdit ? "Save changes" : "Add rental"}
+              {isSubmitting
+                ? t("common.saving")
+                : isEdit
+                  ? t("common.saveChanges")
+                  : t("rentals.form.submitAdd")}
             </Button>
           </DialogFooter>
         </form>

@@ -2,7 +2,10 @@ import { createCollection } from "@/data/store"
 import { createShopSeed } from "@/mock/shops"
 import type { Shop, ShopFormValues } from "@/schemas/shop"
 
-const shops = createCollection<Shop, ShopFormValues>("cas.shops", createShopSeed)
+const shops = createCollection<Shop, ShopFormValues>(
+  "cas.shops.v2",
+  createShopSeed
+)
 
 export function getShops() {
   return shops.list()
