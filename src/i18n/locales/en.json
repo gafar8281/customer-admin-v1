@@ -135,6 +135,7 @@
       "totalAmount": "Total Amount",
       "paid": "Paid",
       "remaining": "Remaining",
+      "payment": "Payment",
       "leaseExpiry": "Lease Expiry"
     },
     "form": {
@@ -147,6 +148,8 @@
       "leaseExpiryDate": "Lease Expiry Date",
       "totalAmount": "Total Amount (SAR)",
       "paidAmount": "Amount Paid (SAR)",
+      "payment": "Payment",
+      "selectBillingCycle": "Select billing cycle",
       "submitAdd": "Add rental"
     }
   },
@@ -192,6 +195,7 @@
   },
   "payment": {
     "monthly": "Monthly",
+    "quarterly": "Quarterly",
     "half_yearly": "Half yearly",
     "yearly": "Yearly"
   },

@@ -22,6 +22,6 @@ export function integerCount(t: TFunction, fieldKey: string) {
   )
 }
 
-export const PAYMENT_OPTIONS = ["monthly", "half_yearly", "yearly"] as const
+export const PAYMENT_OPTIONS = ["monthly", "quarterly", "half_yearly", "yearly"] as const
 
 export type Payment = (typeof PAYMENT_OPTIONS)[number]

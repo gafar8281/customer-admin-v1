@@ -67,7 +67,7 @@ export function createShopSeed(): Shop[] {
       amount: 75000,
       shopLeaseExpiryDate: daysFromNow(120),
       rentAmount: 6200,
-      payment: "half_yearly",
+      payment: "quarterly",
       createdAt: SEED_TIMESTAMP,
       updatedAt: SEED_TIMESTAMP,
     },

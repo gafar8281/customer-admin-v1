@@ -1,7 +1,7 @@
 import type { TFunction } from "i18next"
 import { z } from "zod"
 
-import { sarAmount } from "@/schemas/common"
+import { PAYMENT_OPTIONS, sarAmount } from "@/schemas/common"
 
 export function buildRentalFormSchema(t: TFunction) {
   return z
@@ -24,6 +24,7 @@ export function buildRentalFormSchema(t: TFunction) {
         }),
       totalAmount: sarAmount(t, "totalAmount"),
       paidAmount: sarAmount(t, "paidAmount"),
+      payment: z.enum(PAYMENT_OPTIONS, { error: t("validation.paymentRequired") }),
     })
     .refine((values) => values.paidAmount <= values.totalAmount, {
       message: t("validation.paidExceedsTotal"),

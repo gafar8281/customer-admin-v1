@@ -2,6 +2,7 @@ import { PencilIcon, Trash2Icon } from "lucide-react"
 import { useTranslation } from "react-i18next"
 
 import { LeaseStatusBadge } from "@/components/common/LeaseStatusBadge"
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
   Table,
@@ -48,6 +49,7 @@ export function RentalTable({
             <TableHead className="text-end">
               {t("rentals.columns.remaining")}
             </TableHead>
+            <TableHead>{t("rentals.columns.payment")}</TableHead>
             <TableHead>{t("rentals.columns.leaseExpiry")}</TableHead>
             <TableHead className="w-0">
               <span className="sr-only">{t("common.actions")}</span>
@@ -80,6 +82,15 @@ export function RentalTable({
                   )}
                 >
                   {formatSAR(remaining)}
+                </TableCell>
+                <TableCell>
+                  {rental.payment ? (
+                    <Badge variant="secondary">
+                      {t(`payment.${rental.payment}`)}
+                    </Badge>
+                  ) : (
+                    <span className="text-muted-foreground">—</span>
+                  )}
                 </TableCell>
                 <TableCell>
                   <div className="flex items-center gap-2">

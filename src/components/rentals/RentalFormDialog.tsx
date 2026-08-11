@@ -1,6 +1,11 @@
 import { useEffect, useMemo } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm, useWatch } from "react-hook-form"
+import {
+  Controller,
+  useForm,
+  useWatch,
+  type DefaultValues,
+} from "react-hook-form"
 import { useTranslation } from "react-i18next"
 
 import { Button } from "@/components/ui/button"
@@ -14,8 +19,16 @@ import {
 } from "@/components/ui/dialog"
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { useFormat } from "@/i18n/useFormat"
 import { getRemainingBalance } from "@/lib/rental"
+import { PAYMENT_OPTIONS } from "@/schemas/common"
 import {
   buildRentalFormSchema,
   type Rental,
@@ -23,12 +36,13 @@ import {
   type RentalFormValues,
 } from "@/schemas/rental"
 
-const EMPTY_VALUES: RentalFormInput = {
+const EMPTY_VALUES: DefaultValues<RentalFormInput> = {
   apartmentNumber: "",
   tenantName: "",
   leaseExpiryDate: "",
   totalAmount: 0,
   paidAmount: 0,
+  payment: undefined,
 }
 
 export function RentalFormDialog({
@@ -116,18 +130,54 @@ export function RentalFormDialog({
               <FieldError errors={[errors.apartmentNumber]} />
             </Field>
 
-            <Field>
-              <FieldLabel htmlFor="leaseExpiryDate">
-                {t("rentals.form.leaseExpiryDate")}
-              </FieldLabel>
-              <Input
-                id="leaseExpiryDate"
-                type="date"
-                aria-invalid={!!errors.leaseExpiryDate}
-                {...register("leaseExpiryDate")}
+            <div className="grid grid-cols-2 gap-3">
+              <Field>
+                <FieldLabel htmlFor="leaseExpiryDate">
+                  {t("rentals.form.leaseExpiryDate")}
+                </FieldLabel>
+                <Input
+                  id="leaseExpiryDate"
+                  type="date"
+                  aria-invalid={!!errors.leaseExpiryDate}
+                  {...register("leaseExpiryDate")}
+                />
+                <FieldError errors={[errors.leaseExpiryDate]} />
+              </Field>
+
+              <Controller
+                control={control}
+                name="payment"
+                render={({ field, fieldState }) => (
+                  <Field>
+                    <FieldLabel htmlFor="payment">
+                      {t("rentals.form.payment")}
+                    </FieldLabel>
+                    <Select
+                      value={field.value}
+                      onValueChange={(value) => field.onChange(value)}
+                    >
+                      <SelectTrigger
+                        id="payment"
+                        className="w-full"
+                        aria-invalid={!!fieldState.error}
+                      >
+                        <SelectValue
+                          placeholder={t("rentals.form.selectBillingCycle")}
+                        />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {PAYMENT_OPTIONS.map((option) => (
+                          <SelectItem key={option} value={option}>
+                            {t(`payment.${option}`)}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FieldError errors={[fieldState.error]} />
+                  </Field>
+                )}
               />
-              <FieldError errors={[errors.leaseExpiryDate]} />
-            </Field>
+            </div>
 
             <div className="grid grid-cols-2 gap-3">
               <Field>

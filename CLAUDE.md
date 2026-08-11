@@ -61,7 +61,7 @@ sections are accessible.
 | `amount` | number | General amount field — confirm exact meaning (e.g. shop valuation, deposit, or total contract value) during implementation |
 | `shopLeaseExpiryDate` | date | Lease expiry date — used to flag upcoming/overdue renewals |
 | `rentAmount` | number (SAR) | Recurring rent amount |
-| `payment` | enum (dropdown) | Billing cycle for rent. Options: Monthly, Half yearly, Yearly |
+| `payment` | enum (dropdown) | Billing cycle for rent. Options: Monthly, Quarterly, Half yearly, Yearly |
 
 ---
 

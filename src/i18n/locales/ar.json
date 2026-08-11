@@ -139,6 +139,7 @@
       "totalAmount": "المبلغ الإجمالي",
       "paid": "المدفوع",
       "remaining": "المتبقي",
+      "payment": "الدفع",
       "leaseExpiry": "انتهاء العقد"
     },
     "form": {
@@ -151,6 +152,8 @@
       "leaseExpiryDate": "تاريخ انتهاء العقد",
       "totalAmount": "المبلغ الإجمالي (ريال)",
       "paidAmount": "المبلغ المدفوع (ريال)",
+      "payment": "الدفع",
+      "selectBillingCycle": "اختر دورة الفوترة",
       "submitAdd": "إضافة إيجار"
     }
   },
@@ -196,6 +199,7 @@
   },
   "payment": {
     "monthly": "شهري",
+    "quarterly": "ربع سنوي",
     "half_yearly": "نصف سنوي",
     "yearly": "سنوي"
   },
