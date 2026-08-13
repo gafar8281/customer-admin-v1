@@ -1,5 +1,6 @@
 import {
   BuildingIcon,
+  CoinsIcon,
   HandCoinsIcon,
   LogOutIcon,
   StoreIcon,
@@ -20,6 +21,7 @@ const NAV_ITEMS = [
   { to: "/shops", labelKey: "nav.shops", icon: StoreIcon },
   { to: "/rentals", labelKey: "nav.rentals", icon: BuildingIcon },
   { to: "/debts", labelKey: "nav.debts", icon: HandCoinsIcon },
+  { to: "/receivables", labelKey: "nav.receivables", icon: CoinsIcon },
 ]
 
 function NavLinks({ className }: { className?: string }) {

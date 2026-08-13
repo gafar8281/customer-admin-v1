@@ -21,7 +21,8 @@
     "employees": "Employees",
     "shops": "Shops",
     "rentals": "Rentals",
-    "debts": "Debts",
+    "debts": "Debts Payable",
+    "receivables": "Debts Receivable",
     "signOut": "Sign out",
     "toggleLanguage": "Switch to Arabic"
   },
@@ -157,7 +158,7 @@
     }
   },
   "debts": {
-    "title": "Debts",
+    "title": "Debts Payable",
     "description": "Track outstanding amounts the company owes to customers.",
     "add": "Add Debt",
     "searchPlaceholder": "Search by customer or note…",
@@ -187,6 +188,39 @@
       "note": "Note (optional)",
       "debtWeOwe": "Debt We Owe (SAR)",
       "submitAdd": "Add debt"
+    }
+  },
+  "receivables": {
+    "title": "Debts Receivable",
+    "description": "Track outstanding amounts customers owe to the company.",
+    "add": "Add Receivable",
+    "searchPlaceholder": "Search by customer or note…",
+    "emptyTitle": "No receivables yet",
+    "emptyDescription": "Add your first receivable to get started.",
+    "noMatchesTitle": "No matches found",
+    "noMatchesDescription": "Try a different search term.",
+    "added": "Receivable added",
+    "updated": "Receivable updated",
+    "deleted": "Receivable deleted",
+    "deleteTitle": "Delete receivable?",
+    "deleteDescription": "This will permanently remove the {{amount}} debt owed by {{customer}} from your records.",
+    "customers": "Customers",
+    "totalReceivable": "Total Receivable",
+    "largestReceivable": "Largest Receivable",
+    "columns": {
+      "customer": "Customer",
+      "note": "Note",
+      "debtOwedToUs": "Debt Owed To Us"
+    },
+    "form": {
+      "editTitle": "Edit Receivable",
+      "addTitle": "Add Receivable",
+      "editDescription": "Update the amount owed by this customer.",
+      "addDescription": "Enter the details for the new receivable.",
+      "customer": "Customer",
+      "note": "Note (optional)",
+      "debtOwedToUs": "Debt Owed To Us (SAR)",
+      "submitAdd": "Add receivable"
     }
   },
   "lease": {
@@ -234,7 +268,8 @@
       "rentAmount": "Rent amount",
       "totalAmount": "Total amount",
       "paidAmount": "Paid amount",
-      "debtWeOwe": "Debt amount"
+      "debtWeOwe": "Debt amount",
+      "debtOwedToUs": "Receivable amount"
     },
     "amountRequired": "{{field}} is required",
     "amountNegative": "{{field}} cannot be negative",

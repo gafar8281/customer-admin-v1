@@ -21,7 +21,8 @@
     "employees": "الموظفون",
     "shops": "المحلات",
     "rentals": "الإيجارات",
-    "debts": "الديون",
+    "debts": "الديون المستحقة علينا",
+    "receivables": "الديون المستحقة لنا",
     "signOut": "تسجيل الخروج",
     "toggleLanguage": "التبديل إلى الإنجليزية"
   },
@@ -161,7 +162,7 @@
     }
   },
   "debts": {
-    "title": "الديون",
+    "title": "الديون المستحقة علينا",
     "description": "تتبع المبالغ المستحقة التي تدين بها الشركة للعملاء.",
     "add": "إضافة دين",
     "searchPlaceholder": "ابحث بالعميل أو الملاحظة…",
@@ -191,6 +192,39 @@
       "note": "ملاحظة (اختياري)",
       "debtWeOwe": "الدين المستحق علينا (ريال)",
       "submitAdd": "إضافة دين"
+    }
+  },
+  "receivables": {
+    "title": "الديون المستحقة لنا",
+    "description": "تتبع المبالغ المستحقة التي يدين بها العملاء للشركة.",
+    "add": "إضافة دين مستحق",
+    "searchPlaceholder": "ابحث بالعميل أو الملاحظة…",
+    "emptyTitle": "لا توجد ديون مستحقة بعد",
+    "emptyDescription": "أضف أول دين مستحق للبدء.",
+    "noMatchesTitle": "لا توجد نتائج مطابقة",
+    "noMatchesDescription": "جرّب كلمة بحث مختلفة.",
+    "added": "تمت إضافة الدين المستحق",
+    "updated": "تم تحديث الدين المستحق",
+    "deleted": "تم حذف الدين المستحق",
+    "deleteTitle": "حذف الدين المستحق؟",
+    "deleteDescription": "سيؤدي هذا إلى إزالة الدين البالغ {{amount}} المستحق على {{customer}} نهائيًا من سجلاتك.",
+    "customers": "العملاء",
+    "totalReceivable": "إجمالي المستحق لنا",
+    "largestReceivable": "أكبر دين مستحق",
+    "columns": {
+      "customer": "العميل",
+      "note": "ملاحظة",
+      "debtOwedToUs": "الدين المستحق لنا"
+    },
+    "form": {
+      "editTitle": "تعديل الدين المستحق",
+      "addTitle": "إضافة دين مستحق",
+      "editDescription": "تحديث المبلغ المستحق على هذا العميل.",
+      "addDescription": "أدخل بيانات الدين المستحق الجديد.",
+      "customer": "العميل",
+      "note": "ملاحظة (اختياري)",
+      "debtOwedToUs": "الدين المستحق لنا (ريال)",
+      "submitAdd": "إضافة دين مستحق"
     }
   },
   "lease": {
@@ -238,7 +272,8 @@
       "rentAmount": "مبلغ الإيجار",
       "totalAmount": "المبلغ الإجمالي",
       "paidAmount": "المبلغ المدفوع",
-      "debtWeOwe": "مبلغ الدين"
+      "debtWeOwe": "مبلغ الدين",
+      "debtOwedToUs": "مبلغ الدين المستحق لنا"
     },
     "amountRequired": "{{field}} مطلوب",
     "amountNegative": "{{field}} لا يمكن أن يكون سالبًا",

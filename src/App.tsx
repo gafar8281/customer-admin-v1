@@ -7,6 +7,7 @@ import { EmployeesPage } from "@/pages/EmployeesPage"
 import { ShopsPage } from "@/pages/ShopsPage"
 import { RentalsPage } from "@/pages/RentalsPage"
 import { DebtsPage } from "@/pages/DebtsPage"
+import { ReceivablesPage } from "@/pages/ReceivablesPage"
 import { NotFoundPage } from "@/pages/NotFoundPage"
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
           <Route path="shops" element={<ShopsPage />} />
           <Route path="rentals" element={<RentalsPage />} />
           <Route path="debts" element={<DebtsPage />} />
+          <Route path="receivables" element={<ReceivablesPage />} />
         </Route>
       </Route>
       <Route path="*" element={<NotFoundPage />} />
