@@ -16,13 +16,17 @@ sections are accessible.
 - Session persistence (stay logged in on refresh)
 - Logout
 
-### Mock credentials (development only)
+### Credentials
 
-| Field | Value |
-|---|---|
-| Email | `customer@email.com` |
-| Password | `cust@123` |
+Credentials live in the Firestore `customer_user` collection (`email`, `password`,
+`createdAt`) — one document per admin user, email stored lowercase. There are no
+credentials in the bundle, so the password can be rotated from the Firebase Console
+without a redeploy.
 
+Because the security rules require `request.auth != null`, the login handler calls
+`ensureAnonymousAuth()` (`src/lib/firebase.ts`) to establish an anonymous Firebase Auth
+session before reading the collection. Anonymous sign-in must stay enabled in the
+Console.
 
 ---
 

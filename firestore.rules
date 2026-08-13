@@ -1,13 +1,13 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // DEMO ONLY — fully public. Anyone with the site URL (or who reads the
-    // client bundle) can read, edit, or delete every record. Tighten this
-    // before this app leaves the demo phase, e.g. by requiring
-    // `request.auth != null` once anonymous or real Firebase Auth is wired
-    // up alongside the existing login form.
+    // Requires a signed-in session — the app establishes an anonymous one before it
+    // touches Firestore (see ensureAnonymousAuth in src/lib/firebase.ts). Anonymous
+    // sign-in is open to anyone, so this keeps out unauthenticated traffic but is not
+    // a substitute for real per-user auth; move the login to Firebase Auth's
+    // email/password provider before this app leaves the demo phase.
     match /{document=**} {
-      allow read, write: if true;
+      allow read, write: if request.auth != null;
     }
   }
 }

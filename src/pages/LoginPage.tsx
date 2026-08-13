@@ -60,7 +60,11 @@ export function LoginPage() {
     setFormError(null)
     const error = await signIn(values.email, values.password)
     if (error) {
-      setFormError(t("auth.invalidCredentials"))
+      setFormError(
+        error === "invalid_credentials"
+          ? t("auth.invalidCredentials")
+          : t("auth.signInFailed")
+      )
       return
     }
     const state = location.state as LocationState | null
@@ -108,11 +112,6 @@ export function LoginPage() {
               <Button type="submit" disabled={isSubmitting} className="w-full">
                 {isSubmitting ? t("auth.signingIn") : t("auth.signIn")}
               </Button>
-              <p className="text-center text-xs text-muted-foreground">
-                {/* Demo credentials:{" "}
-                <span className="font-medium">customer@email.com</span> /{" "}
-                <span className="font-medium">cust@123</span> */}
-              </p>
             </FieldGroup>
           </form>
         </CardContent>

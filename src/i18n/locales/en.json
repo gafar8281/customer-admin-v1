@@ -33,7 +33,8 @@
     "password": "Password",
     "signIn": "Sign in",
     "signingIn": "Signing in…",
-    "invalidCredentials": "Invalid email or password."
+    "invalidCredentials": "Invalid email or password.",
+    "signInFailed": "Could not sign in. Check your connection and try again."
   },
   "employees": {
     "title": "Employees",
