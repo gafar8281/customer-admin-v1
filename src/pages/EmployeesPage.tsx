@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react"
-import { PlusIcon, UsersIcon } from "lucide-react"
+import { AlertTriangleIcon, PlusIcon, UsersIcon } from "lucide-react"
 import { useTranslation } from "react-i18next"
 import { toast } from "sonner"
 
@@ -9,13 +9,13 @@ import { EmptyState } from "@/components/common/EmptyState"
 import { PageHeader } from "@/components/common/PageHeader"
 import { EmployeeFormDialog } from "@/components/employees/EmployeeFormDialog"
 import { EmployeeTable } from "@/components/employees/EmployeeTable"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import {
   createEmployee,
   deleteEmployee,
-  getEmployees,
-  resetEmployees,
+  subscribeEmployees,
   updateEmployee,
 } from "@/data/employees"
 import { useCollection } from "@/hooks/useCollection"
@@ -25,15 +25,14 @@ import type { Employee, EmployeeFormValues } from "@/schemas/employee"
 export function EmployeesPage() {
   const { t } = useTranslation()
   const { formatSAR } = useFormat()
-  const { items, loading, create, update, remove } = useCollection<
+  const { items, loading, error, create, update, remove } = useCollection<
     Employee,
     EmployeeFormValues
   >({
-    list: getEmployees,
+    subscribe: subscribeEmployees,
     create: createEmployee,
     update: updateEmployee,
     remove: deleteEmployee,
-    reset: resetEmployees,
   })
 
   const [search, setSearch] = useState("")
@@ -78,12 +77,16 @@ export function EmployeesPage() {
   }
 
   async function handleSubmit(values: EmployeeFormValues) {
-    if (editingEmployee) {
-      await update(editingEmployee.id, values)
-      toast.success(t("employees.updated"))
-    } else {
-      await create(values)
-      toast.success(t("employees.added"))
+    try {
+      if (editingEmployee) {
+        await update(editingEmployee.id, values)
+        toast.success(t("employees.updated"))
+      } else {
+        await create(values)
+        toast.success(t("employees.added"))
+      }
+    } catch {
+      toast.error(t("common.saveFailed"))
     }
   }
 
@@ -94,6 +97,8 @@ export function EmployeesPage() {
       await remove(deletingEmployee.id)
       toast.success(t("employees.deleted"))
       setDeletingEmployee(null)
+    } catch {
+      toast.error(t("common.deleteFailed"))
     } finally {
       setIsDeleting(false)
     }
@@ -111,6 +116,14 @@ export function EmployeesPage() {
           </Button>
         }
       />
+
+      {error && (
+        <Alert variant="destructive" className="mb-4">
+          <AlertTriangleIcon />
+          <AlertTitle>{t("common.loadFailed")}</AlertTitle>
+          <AlertDescription>{t("common.loadFailedDescription")}</AlertDescription>
+        </Alert>
+      )}
 
       {!loading && items.length > 0 && (
         <div className="mb-4 grid grid-cols-2 gap-3 sm:max-w-md">

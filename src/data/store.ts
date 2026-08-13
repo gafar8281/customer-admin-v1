@@ -1,4 +1,15 @@
-const SIMULATED_DELAY_MS = 250
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  onSnapshot,
+  orderBy,
+  query,
+  updateDoc,
+} from "firebase/firestore"
+
+import { db } from "@/lib/firebase"
 
 type WithMeta = {
   id: string
@@ -7,97 +18,49 @@ type WithMeta = {
 }
 
 interface CollectionApi<T extends WithMeta, Input extends Record<string, unknown>> {
-  list(): Promise<T[]>
+  subscribe(onData: (items: T[]) => void, onError: (error: Error) => void): () => void
   create(input: Input): Promise<T>
   update(id: string, input: Input): Promise<T>
   remove(id: string): Promise<void>
-  reset(): Promise<T[]>
-}
-
-function delay<T>(value: T): Promise<T> {
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(value), SIMULATED_DELAY_MS)
-  })
-}
-
-function readFromStorage<T>(key: string): T[] | null {
-  try {
-    const raw = window.localStorage.getItem(key)
-    if (!raw) return null
-    const parsed = JSON.parse(raw)
-    return Array.isArray(parsed) ? (parsed as T[]) : null
-  } catch {
-    return null
-  }
-}
-
-function writeToStorage<T>(key: string, items: T[]) {
-  window.localStorage.setItem(key, JSON.stringify(items))
 }
 
 export function createCollection<
   T extends WithMeta,
   Input extends Record<string, unknown> = Omit<T, keyof WithMeta>,
->(key: string, seed: () => T[]): CollectionApi<T, Input> {
-  function readAll(): T[] {
-    const stored = readFromStorage<T>(key)
-    if (stored) return stored
-    const seeded = seed()
-    writeToStorage(key, seeded)
-    return seeded
-  }
+>(collectionName: string): CollectionApi<T, Input> {
+  const ref = collection(db, collectionName)
 
   return {
-    async list() {
-      return delay(readAll())
+    subscribe(onData, onError) {
+      const q = query(ref, orderBy("createdAt"))
+      return onSnapshot(
+        q,
+        (snapshot) => {
+          const items = snapshot.docs.map(
+            (docSnapshot) => ({ id: docSnapshot.id, ...docSnapshot.data() }) as T
+          )
+          onData(items)
+        },
+        onError
+      )
     },
 
     async create(input) {
-      const items = readAll()
       const now = new Date().toISOString()
-      const record = {
-        ...input,
-        id: crypto.randomUUID(),
-        createdAt: now,
-        updatedAt: now,
-      } as unknown as T
-
-      writeToStorage(key, [...items, record])
-      return delay(record)
+      const data = { ...input, createdAt: now, updatedAt: now }
+      const docRef = await addDoc(ref, data)
+      return { ...data, id: docRef.id } as unknown as T
     },
 
     async update(id, input) {
-      const items = readAll()
       const now = new Date().toISOString()
-      let updated: T | undefined
-
-      const next = items.map((item) => {
-        if (item.id !== id) return item
-        updated = { ...item, ...input, updatedAt: now }
-        return updated
-      })
-
-      if (!updated) {
-        throw new Error(`Record with id "${id}" was not found in "${key}"`)
-      }
-
-      writeToStorage(key, next)
-      return delay(updated)
+      const data = { ...input, updatedAt: now }
+      await updateDoc(doc(ref, id), data)
+      return { ...data, id } as unknown as T
     },
 
     async remove(id) {
-      const items = readAll()
-      writeToStorage(
-        key,
-        items.filter((item) => item.id !== id)
-      )
-      return delay(undefined)
-    },
-
-    async reset() {
-      const seeded = seed()
-      writeToStorage(key, seeded)
-      return delay(seeded)
+      await deleteDoc(doc(ref, id))
     },
   }
 }

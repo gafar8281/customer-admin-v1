@@ -1,11 +1,13 @@
 import { createCollection } from "@/data/store"
-import { createDebtSeed } from "@/mock/debts"
 import type { Debt, DebtFormValues } from "@/schemas/debt"
 
-const debts = createCollection<Debt, DebtFormValues>("cas.debts", createDebtSeed)
+const debts = createCollection<Debt, DebtFormValues>("debts")
 
-export function getDebts() {
-  return debts.list()
+export function subscribeDebts(
+  onData: (items: Debt[]) => void,
+  onError: (error: Error) => void
+) {
+  return debts.subscribe(onData, onError)
 }
 
 export function createDebt(input: DebtFormValues) {
@@ -18,8 +20,4 @@ export function updateDebt(id: string, input: DebtFormValues) {
 
 export function deleteDebt(id: string) {
   return debts.remove(id)
-}
-
-export function resetDebts() {
-  return debts.reset()
 }

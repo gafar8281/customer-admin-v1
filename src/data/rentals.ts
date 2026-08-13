@@ -1,14 +1,13 @@
 import { createCollection } from "@/data/store"
-import { createRentalSeed } from "@/mock/rentals"
 import type { Rental, RentalFormValues } from "@/schemas/rental"
 
-const rentals = createCollection<Rental, RentalFormValues>(
-  "cas.rentals",
-  createRentalSeed
-)
+const rentals = createCollection<Rental, RentalFormValues>("rentals")
 
-export function getRentals() {
-  return rentals.list()
+export function subscribeRentals(
+  onData: (items: Rental[]) => void,
+  onError: (error: Error) => void
+) {
+  return rentals.subscribe(onData, onError)
 }
 
 export function createRental(input: RentalFormValues) {
@@ -21,8 +20,4 @@ export function updateRental(id: string, input: RentalFormValues) {
 
 export function deleteRental(id: string) {
   return rentals.remove(id)
-}
-
-export function resetRentals() {
-  return rentals.reset()
 }

@@ -10,6 +10,9 @@
     "actions": "إجراءات",
     "close": "إغلاق",
     "loadFailed": "فشل تحميل البيانات.",
+    "loadFailedDescription": "تحقق من اتصالك وحاول تحديث الصفحة.",
+    "saveFailed": "فشل الحفظ. حاول مرة أخرى.",
+    "deleteFailed": "فشل الحذف. حاول مرة أخرى.",
     "editItem": "تعديل {{name}}",
     "deleteItem": "حذف {{name}}"
   },

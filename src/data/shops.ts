@@ -1,14 +1,13 @@
 import { createCollection } from "@/data/store"
-import { createShopSeed } from "@/mock/shops"
 import type { Shop, ShopFormValues } from "@/schemas/shop"
 
-const shops = createCollection<Shop, ShopFormValues>(
-  "cas.shops.v2",
-  createShopSeed
-)
+const shops = createCollection<Shop, ShopFormValues>("shops")
 
-export function getShops() {
-  return shops.list()
+export function subscribeShops(
+  onData: (items: Shop[]) => void,
+  onError: (error: Error) => void
+) {
+  return shops.subscribe(onData, onError)
 }
 
 export function createShop(input: ShopFormValues) {
@@ -21,8 +20,4 @@ export function updateShop(id: string, input: ShopFormValues) {
 
 export function deleteShop(id: string) {
   return shops.remove(id)
-}
-
-export function resetShops() {
-  return shops.reset()
 }

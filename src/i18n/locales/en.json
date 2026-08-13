@@ -10,6 +10,9 @@
     "actions": "Actions",
     "close": "Close",
     "loadFailed": "Failed to load data.",
+    "loadFailedDescription": "Check your connection and try refreshing the page.",
+    "saveFailed": "Failed to save. Please try again.",
+    "deleteFailed": "Failed to delete. Please try again.",
     "editItem": "Edit {{name}}",
     "deleteItem": "Delete {{name}}"
   },

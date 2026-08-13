@@ -12,28 +12,21 @@ import { ShopTable } from "@/components/shops/ShopTable"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
-import {
-  createShop,
-  deleteShop,
-  getShops,
-  resetShops,
-  updateShop,
-} from "@/data/shops"
+import { createShop, deleteShop, subscribeShops, updateShop } from "@/data/shops"
 import { useCollection } from "@/hooks/useCollection"
 import { getLeaseStatus } from "@/lib/lease"
 import type { Shop, ShopFormValues } from "@/schemas/shop"
 
 export function ShopsPage() {
   const { t } = useTranslation()
-  const { items, loading, create, update, remove } = useCollection<
+  const { items, loading, error, create, update, remove } = useCollection<
     Shop,
     ShopFormValues
   >({
-    list: getShops,
+    subscribe: subscribeShops,
     create: createShop,
     update: updateShop,
     remove: deleteShop,
-    reset: resetShops,
   })
 
   const [search, setSearch] = useState("")
@@ -68,12 +61,16 @@ export function ShopsPage() {
   }
 
   async function handleSubmit(values: ShopFormValues) {
-    if (editingShop) {
-      await update(editingShop.id, values)
-      toast.success(t("shops.updated"))
-    } else {
-      await create(values)
-      toast.success(t("shops.added"))
+    try {
+      if (editingShop) {
+        await update(editingShop.id, values)
+        toast.success(t("shops.updated"))
+      } else {
+        await create(values)
+        toast.success(t("shops.added"))
+      }
+    } catch {
+      toast.error(t("common.saveFailed"))
     }
   }
 
@@ -84,6 +81,8 @@ export function ShopsPage() {
       await remove(deletingShop.id)
       toast.success(t("shops.deleted"))
       setDeletingShop(null)
+    } catch {
+      toast.error(t("common.deleteFailed"))
     } finally {
       setIsDeleting(false)
     }
@@ -101,6 +100,14 @@ export function ShopsPage() {
           </Button>
         }
       />
+
+      {error && (
+        <Alert variant="destructive" className="mb-4">
+          <AlertTriangleIcon />
+          <AlertTitle>{t("common.loadFailed")}</AlertTitle>
+          <AlertDescription>{t("common.loadFailedDescription")}</AlertDescription>
+        </Alert>
+      )}
 
       {!loading && atRiskCount > 0 && (
         <Alert variant="destructive" className="mb-4">

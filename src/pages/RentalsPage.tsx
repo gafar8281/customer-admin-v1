@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react"
-import { BuildingIcon, PlusIcon } from "lucide-react"
+import { AlertTriangleIcon, BuildingIcon, PlusIcon } from "lucide-react"
 import { useTranslation } from "react-i18next"
 import { toast } from "sonner"
 
@@ -9,13 +9,13 @@ import { EmptyState } from "@/components/common/EmptyState"
 import { PageHeader } from "@/components/common/PageHeader"
 import { RentalFormDialog } from "@/components/rentals/RentalFormDialog"
 import { RentalTable } from "@/components/rentals/RentalTable"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import {
   createRental,
   deleteRental,
-  getRentals,
-  resetRentals,
+  subscribeRentals,
   updateRental,
 } from "@/data/rentals"
 import { useCollection } from "@/hooks/useCollection"
@@ -26,15 +26,14 @@ import type { Rental, RentalFormValues } from "@/schemas/rental"
 export function RentalsPage() {
   const { t } = useTranslation()
   const { formatSAR } = useFormat()
-  const { items, loading, create, update, remove } = useCollection<
+  const { items, loading, error, create, update, remove } = useCollection<
     Rental,
     RentalFormValues
   >({
-    list: getRentals,
+    subscribe: subscribeRentals,
     create: createRental,
     update: updateRental,
     remove: deleteRental,
-    reset: resetRentals,
   })
 
   const [search, setSearch] = useState("")
@@ -79,12 +78,16 @@ export function RentalsPage() {
   }
 
   async function handleSubmit(values: RentalFormValues) {
-    if (editingRental) {
-      await update(editingRental.id, values)
-      toast.success(t("rentals.updated"))
-    } else {
-      await create(values)
-      toast.success(t("rentals.added"))
+    try {
+      if (editingRental) {
+        await update(editingRental.id, values)
+        toast.success(t("rentals.updated"))
+      } else {
+        await create(values)
+        toast.success(t("rentals.added"))
+      }
+    } catch {
+      toast.error(t("common.saveFailed"))
     }
   }
 
@@ -95,6 +98,8 @@ export function RentalsPage() {
       await remove(deletingRental.id)
       toast.success(t("rentals.deleted"))
       setDeletingRental(null)
+    } catch {
+      toast.error(t("common.deleteFailed"))
     } finally {
       setIsDeleting(false)
     }
@@ -112,6 +117,14 @@ export function RentalsPage() {
           </Button>
         }
       />
+
+      {error && (
+        <Alert variant="destructive" className="mb-4">
+          <AlertTriangleIcon />
+          <AlertTitle>{t("common.loadFailed")}</AlertTitle>
+          <AlertDescription>{t("common.loadFailedDescription")}</AlertDescription>
+        </Alert>
+      )}
 
       {!loading && items.length > 0 && (
         <div className="mb-4 grid grid-cols-2 gap-3 sm:max-w-2xl sm:grid-cols-3">

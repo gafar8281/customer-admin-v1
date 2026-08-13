@@ -1,14 +1,13 @@
 import { createCollection } from "@/data/store"
-import { createEmployeeSeed } from "@/mock/employees"
 import type { Employee, EmployeeFormValues } from "@/schemas/employee"
 
-const employees = createCollection<Employee, EmployeeFormValues>(
-  "cas.employees.v3",
-  createEmployeeSeed
-)
+const employees = createCollection<Employee, EmployeeFormValues>("employees")
 
-export function getEmployees() {
-  return employees.list()
+export function subscribeEmployees(
+  onData: (items: Employee[]) => void,
+  onError: (error: Error) => void
+) {
+  return employees.subscribe(onData, onError)
 }
 
 export function createEmployee(input: EmployeeFormValues) {
@@ -21,8 +20,4 @@ export function updateEmployee(id: string, input: EmployeeFormValues) {
 
 export function deleteEmployee(id: string) {
   return employees.remove(id)
-}
-
-export function resetEmployees() {
-  return employees.reset()
 }
