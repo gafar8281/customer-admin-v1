@@ -24,6 +24,7 @@
     "debts": "الديون المستحقة علينا",
     "receivables": "الديون المستحقة لنا",
     "expenses": "المصروفات",
+    "licenses": "السجلات التجارية",
     "signOut": "تسجيل الخروج",
     "toggleLanguage": "التبديل إلى الإنجليزية"
   },
@@ -277,6 +278,43 @@
       "submitAdd": "إضافة مصروف"
     }
   },
+  "licenses": {
+    "title": "السجلات التجارية",
+    "description": "إدارة السجلات التجارية وتواريخ انتهائها.",
+    "add": "إضافة سجل تجاري",
+    "searchPlaceholder": "ابحث بالمنشأة أو الرقم الموحد…",
+    "emptyTitle": "لا توجد سجلات تجارية بعد",
+    "emptyDescription": "أضف أول سجل تجاري للبدء.",
+    "noMatchesTitle": "لا توجد نتائج مطابقة",
+    "noMatchesDescription": "جرّب كلمة بحث مختلفة.",
+    "added": "تمت إضافة السجل التجاري",
+    "updated": "تم تحديث السجل التجاري",
+    "deleted": "تم حذف السجل التجاري",
+    "deleteTitle": "حذف السجل التجاري؟",
+    "deleteDescription": "سيؤدي هذا إلى إزالة {{name}} نهائيًا من سجلاتك.",
+    "licensesAtRisk_zero": "لا سجلات بحاجة إلى انتباه",
+    "licensesAtRisk_one": "سجل واحد بحاجة إلى انتباه",
+    "licensesAtRisk_two": "سجلان بحاجة إلى انتباه",
+    "licensesAtRisk_few": "{{count}} سجلات بحاجة إلى انتباه",
+    "licensesAtRisk_many": "{{count}} سجلًا بحاجة إلى انتباه",
+    "licensesAtRisk_other": "{{count}} سجل بحاجة إلى انتباه",
+    "licensesAtRiskDescription": "منتهية أو تنتهي خلال الثلاثين يومًا القادمة.",
+    "columns": {
+      "facility": "المنشأة",
+      "unifiedNumber": "الرقم الموحد",
+      "expiryDate": "تاريخ الانتهاء"
+    },
+    "form": {
+      "editTitle": "تعديل السجل التجاري",
+      "addTitle": "إضافة سجل تجاري",
+      "editDescription": "تحديث تفاصيل هذا السجل التجاري.",
+      "addDescription": "أدخل بيانات السجل التجاري الجديد.",
+      "facilities": "المنشآت",
+      "unifiedNumber": "الرقم الموحد",
+      "expiryDate": "تاريخ الانتهاء",
+      "submitAdd": "إضافة سجل تجاري"
+    }
+  },
   "lease": {
     "status": {
       "expired": "منتهي",
@@ -354,7 +392,13 @@
     "expenseDateInvalid": "يجب أن يكون التاريخ صحيحًا",
     "expenseDateOutOfMonth": "يجب أن يقع التاريخ ضمن الشهر المحدد",
     "monthRequired": "اختر شهرًا",
-    "yearRequired": "أدخل سنة صحيحة"
+    "yearRequired": "أدخل سنة صحيحة",
+    "facilitiesMin": "يجب أن تتكون المنشآت من حرفين على الأقل",
+    "facilitiesMax": "يجب ألا تتجاوز المنشآت 80 حرفًا",
+    "unifiedNumberRequired": "الرقم الموحد مطلوب",
+    "unifiedNumberMax": "يجب ألا يتجاوز الرقم الموحد 40 حرفًا",
+    "expiryDateRequired": "تاريخ الانتهاء مطلوب",
+    "expiryDateInvalid": "يجب أن يكون تاريخ الانتهاء صحيحًا"
   },
   "notFound": {
     "code": "404",

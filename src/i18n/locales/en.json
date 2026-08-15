@@ -24,6 +24,7 @@
     "debts": "Debts Payable",
     "receivables": "Debts Receivable",
     "expenses": "Expenses",
+    "licenses": "Commercial Licenses",
     "signOut": "Sign out",
     "toggleLanguage": "Switch to Arabic"
   },
@@ -273,6 +274,39 @@
       "submitAdd": "Add expense"
     }
   },
+  "licenses": {
+    "title": "Commercial Licenses",
+    "description": "Manage commercial licenses and their expiry dates.",
+    "add": "Add License",
+    "searchPlaceholder": "Search by facility or unified number…",
+    "emptyTitle": "No licenses yet",
+    "emptyDescription": "Add your first commercial license to get started.",
+    "noMatchesTitle": "No matches found",
+    "noMatchesDescription": "Try a different search term.",
+    "added": "License added",
+    "updated": "License updated",
+    "deleted": "License deleted",
+    "deleteTitle": "Delete license?",
+    "deleteDescription": "This will permanently remove {{name}} from your records.",
+    "licensesAtRisk_one": "{{count}} license needs attention",
+    "licensesAtRisk_other": "{{count}} licenses need attention",
+    "licensesAtRiskDescription": "Expired or expiring within the next 30 days.",
+    "columns": {
+      "facility": "Facility",
+      "unifiedNumber": "Unified Number",
+      "expiryDate": "Expiry Date"
+    },
+    "form": {
+      "editTitle": "Edit License",
+      "addTitle": "Add License",
+      "editDescription": "Update this commercial license's details.",
+      "addDescription": "Enter the details for the new commercial license.",
+      "facilities": "Facilities",
+      "unifiedNumber": "Unified Number",
+      "expiryDate": "Expiry Date",
+      "submitAdd": "Add license"
+    }
+  },
   "lease": {
     "status": {
       "expired": "Expired",
@@ -350,7 +384,13 @@
     "expenseDateInvalid": "Date must be a valid date",
     "expenseDateOutOfMonth": "Date must fall within the selected month",
     "monthRequired": "Select a month",
-    "yearRequired": "Enter a valid year"
+    "yearRequired": "Enter a valid year",
+    "facilitiesMin": "Facilities must be at least 2 characters",
+    "facilitiesMax": "Facilities must be at most 80 characters",
+    "unifiedNumberRequired": "Unified number is required",
+    "unifiedNumberMax": "Unified number must be at most 40 characters",
+    "expiryDateRequired": "Expiry date is required",
+    "expiryDateInvalid": "Expiry date must be a valid date"
   },
   "notFound": {
     "code": "404",
