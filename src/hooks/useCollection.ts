@@ -20,10 +20,16 @@ export function useCollection<T extends { id: string }, Input>({
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  useEffect(() => {
+  // Resets loading/error synchronously during render when `subscribe` changes,
+  // rather than in the effect body — avoids an extra cascading render.
+  const [prevSubscribe, setPrevSubscribe] = useState(() => subscribe)
+  if (subscribe !== prevSubscribe) {
+    setPrevSubscribe(() => subscribe)
     setLoading(true)
     setError(null)
+  }
 
+  useEffect(() => {
     const unsubscribe = subscribe(
       (data) => {
         setItems(data)

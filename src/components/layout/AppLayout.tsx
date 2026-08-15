@@ -3,6 +3,7 @@ import {
   CoinsIcon,
   HandCoinsIcon,
   LogOutIcon,
+  ReceiptIcon,
   StoreIcon,
   UsersIcon,
 } from "lucide-react"
@@ -22,6 +23,7 @@ const NAV_ITEMS = [
   { to: "/rentals", labelKey: "nav.rentals", icon: BuildingIcon },
   { to: "/debts", labelKey: "nav.debts", icon: HandCoinsIcon },
   { to: "/receivables", labelKey: "nav.receivables", icon: CoinsIcon },
+  { to: "/expenses", labelKey: "nav.expenses", icon: ReceiptIcon },
 ]
 
 function NavLinks({ className }: { className?: string }) {

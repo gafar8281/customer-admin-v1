@@ -23,6 +23,7 @@
     "rentals": "Rentals",
     "debts": "Debts Payable",
     "receivables": "Debts Receivable",
+    "expenses": "Expenses",
     "signOut": "Sign out",
     "toggleLanguage": "Switch to Arabic"
   },
@@ -224,6 +225,54 @@
       "submitAdd": "Add receivable"
     }
   },
+  "expenses": {
+    "title": "Expenses",
+    "description": "Track monthly operating expenses.",
+    "addMonth": "Add Month",
+    "addEntry": "Add Expense",
+    "backToMonths": "Back to months",
+    "emptyTitle": "No months yet",
+    "emptyDescription": "Add your first month to get started.",
+    "noMatchesTitle": "No matches found",
+    "noMatchesDescription": "Try a different search term.",
+    "searchPlaceholder": "Search by statement…",
+    "added": "Month added",
+    "entryAdded": "Expense added",
+    "entryUpdated": "Expense updated",
+    "entryDeleted": "Expense deleted",
+    "deleteTitle": "Delete expense?",
+    "deleteDescription": "This will permanently remove \"{{statement}}\" ({{amount}}) from your records.",
+    "monthExists": "This month has already been added.",
+    "monthNotFound": "Month not found",
+    "monthNotFoundDescription": "This expense month doesn't exist or may have been removed.",
+    "months": "Months",
+    "totalDisbursed": "Total Disbursed",
+    "latestMonth": "Latest Month",
+    "entries": "Entries",
+    "largestExpense": "Largest Expense",
+    "columns": {
+      "month": "Month",
+      "totalDisbursed": "Total Disbursed",
+      "statement": "Statement",
+      "date": "Date",
+      "amountDisbursed": "Amount Disbursed"
+    },
+    "form": {
+      "addMonthTitle": "Add Month",
+      "addMonthDescription": "Choose the month and year to start tracking expenses.",
+      "month": "Month",
+      "year": "Year",
+      "submitAddMonth": "Add month",
+      "editTitle": "Edit Expense",
+      "addTitle": "Add Expense",
+      "editDescription": "Update this expense entry.",
+      "addDescription": "Enter the details for the new expense.",
+      "statement": "Statement",
+      "date": "Date",
+      "amountDisbursed": "Amount Disbursed (SAR)",
+      "submitAdd": "Add expense"
+    }
+  },
   "lease": {
     "status": {
       "expired": "Expired",
@@ -270,7 +319,8 @@
       "totalAmount": "Total amount",
       "paidAmount": "Paid amount",
       "debtWeOwe": "Debt amount",
-      "debtOwedToUs": "Receivable amount"
+      "debtOwedToUs": "Receivable amount",
+      "amountDisbursed": "Amount disbursed"
     },
     "amountRequired": "{{field}} is required",
     "amountNegative": "{{field}} cannot be negative",
@@ -293,7 +343,14 @@
     "customerNameMax": "Customer name must be at most 80 characters",
     "noteMax": "Note must be at most 200 characters",
     "emailInvalid": "Enter a valid email address",
-    "passwordRequired": "Password is required"
+    "passwordRequired": "Password is required",
+    "statementMin": "Statement must be at least 2 characters",
+    "statementMax": "Statement must be at most 120 characters",
+    "expenseDateRequired": "Date is required",
+    "expenseDateInvalid": "Date must be a valid date",
+    "expenseDateOutOfMonth": "Date must fall within the selected month",
+    "monthRequired": "Select a month",
+    "yearRequired": "Enter a valid year"
   },
   "notFound": {
     "code": "404",

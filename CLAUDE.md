@@ -108,6 +108,54 @@ Console.
 
 ---
 
+## Feature 5: Expense Management
+
+Monthly operating expenses, grouped by month (e.g. **May 2026**). Adding a month
+creates a record; opening a month displays and manages its individual expense
+entries.
+
+### Capabilities
+- **Add** a new month record (year + month; one record per calendar month)
+- Open a month to **add, edit, and delete** its expense entries
+- List / view all months, with total disbursed per month
+
+### Fields
+
+**Month** (`customer_expenses/{YYYY-MM}`)
+
+| Field | Type | Notes |
+|---|---|---|
+| `year` | number | |
+| `month` | number | 1–12 |
+
+**Expense entry** (`customer_expenses/{YYYY-MM}/expense_entries/{id}`)
+
+| Field | Type | Notes |
+|---|---|---|
+| `statement` | string | What the expense was for |
+| `date` | date | Must fall within the parent month |
+| `amountDisbursed` | number (SAR) | |
+
+### Storage — nested Firestore
+
+Stored as a subcollection, not a flat collection: the document ID of each month
+record is its `YYYY-MM` key (e.g. `2026-05`), which both enforces one record per
+month and gives entries a natural parent scope. Month totals are read via a
+`collectionGroup` query over `expense_entries`, so `firestore.rules` needs a
+collection-group rule for that subcollection name in addition to the app's
+catch-all document rule.
+
+```
+customer_expenses (collection)
+└── "2026-05" (document, id = YYYY-MM)
+     ├── year: 2026
+     ├── month: 5
+     └── expense_entries (subcollection)
+          └── {autoId} { statement, date, amountDisbursed, createdAt, updatedAt }
+```
+
+---
+
 ## Mock Data
 
 Until a real backend/database is connected, the feature should ship with local mock

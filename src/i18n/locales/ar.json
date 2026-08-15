@@ -23,6 +23,7 @@
     "rentals": "الإيجارات",
     "debts": "الديون المستحقة علينا",
     "receivables": "الديون المستحقة لنا",
+    "expenses": "المصروفات",
     "signOut": "تسجيل الخروج",
     "toggleLanguage": "التبديل إلى الإنجليزية"
   },
@@ -228,6 +229,54 @@
       "submitAdd": "إضافة دين مستحق"
     }
   },
+  "expenses": {
+    "title": "المصروفات",
+    "description": "تتبع المصاريف التشغيلية الشهرية.",
+    "addMonth": "إضافة شهر",
+    "addEntry": "إضافة مصروف",
+    "backToMonths": "العودة إلى الأشهر",
+    "emptyTitle": "لا توجد أشهر بعد",
+    "emptyDescription": "أضف أول شهر للبدء.",
+    "noMatchesTitle": "لا توجد نتائج مطابقة",
+    "noMatchesDescription": "جرّب كلمة بحث مختلفة.",
+    "searchPlaceholder": "ابحث بالبيان…",
+    "added": "تمت إضافة الشهر",
+    "entryAdded": "تمت إضافة المصروف",
+    "entryUpdated": "تم تحديث المصروف",
+    "entryDeleted": "تم حذف المصروف",
+    "deleteTitle": "حذف المصروف؟",
+    "deleteDescription": "سيؤدي هذا إلى إزالة \"{{statement}}\" ({{amount}}) نهائيًا من سجلاتك.",
+    "monthExists": "تمت إضافة هذا الشهر مسبقًا.",
+    "monthNotFound": "الشهر غير موجود",
+    "monthNotFoundDescription": "هذا الشهر غير موجود أو ربما تمت إزالته.",
+    "months": "الأشهر",
+    "totalDisbursed": "إجمالي المصروف",
+    "latestMonth": "أحدث شهر",
+    "entries": "المصاريف",
+    "largestExpense": "أكبر مصروف",
+    "columns": {
+      "month": "الشهر",
+      "totalDisbursed": "إجمالي المصروف",
+      "statement": "البيان",
+      "date": "التاريخ",
+      "amountDisbursed": "المبلغ المصروف"
+    },
+    "form": {
+      "addMonthTitle": "إضافة شهر",
+      "addMonthDescription": "اختر الشهر والسنة لبدء تتبع المصاريف.",
+      "month": "الشهر",
+      "year": "السنة",
+      "submitAddMonth": "إضافة شهر",
+      "editTitle": "تعديل المصروف",
+      "addTitle": "إضافة مصروف",
+      "editDescription": "تحديث بيانات هذا المصروف.",
+      "addDescription": "أدخل بيانات المصروف الجديد.",
+      "statement": "البيان",
+      "date": "التاريخ",
+      "amountDisbursed": "المبلغ المصروف (ريال)",
+      "submitAdd": "إضافة مصروف"
+    }
+  },
   "lease": {
     "status": {
       "expired": "منتهي",
@@ -274,7 +323,8 @@
       "totalAmount": "المبلغ الإجمالي",
       "paidAmount": "المبلغ المدفوع",
       "debtWeOwe": "مبلغ الدين",
-      "debtOwedToUs": "مبلغ الدين المستحق لنا"
+      "debtOwedToUs": "مبلغ الدين المستحق لنا",
+      "amountDisbursed": "المبلغ المصروف"
     },
     "amountRequired": "{{field}} مطلوب",
     "amountNegative": "{{field}} لا يمكن أن يكون سالبًا",
@@ -297,7 +347,14 @@
     "customerNameMax": "يجب ألا يتجاوز اسم العميل 80 حرفًا",
     "noteMax": "يجب ألا تتجاوز الملاحظة 200 حرف",
     "emailInvalid": "أدخل بريدًا إلكترونيًا صحيحًا",
-    "passwordRequired": "كلمة المرور مطلوبة"
+    "passwordRequired": "كلمة المرور مطلوبة",
+    "statementMin": "يجب أن يتكون البيان من حرفين على الأقل",
+    "statementMax": "يجب ألا يتجاوز البيان 120 حرفًا",
+    "expenseDateRequired": "التاريخ مطلوب",
+    "expenseDateInvalid": "يجب أن يكون التاريخ صحيحًا",
+    "expenseDateOutOfMonth": "يجب أن يقع التاريخ ضمن الشهر المحدد",
+    "monthRequired": "اختر شهرًا",
+    "yearRequired": "أدخل سنة صحيحة"
   },
   "notFound": {
     "code": "404",
