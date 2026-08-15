@@ -25,6 +25,7 @@
     "receivables": "الديون المستحقة لنا",
     "expenses": "المصروفات",
     "licenses": "السجلات التجارية",
+    "shopLicenses": "تراخيص المحلات",
     "signOut": "تسجيل الخروج",
     "toggleLanguage": "التبديل إلى الإنجليزية"
   },
@@ -315,6 +316,49 @@
       "submitAdd": "إضافة سجل تجاري"
     }
   },
+  "shopLicenses": {
+    "title": "تراخيص المحلات",
+    "description": "إدارة التراخيص البلدية للمحلات وتفاصيل استرداد مبالغها.",
+    "add": "إضافة ترخيص محل",
+    "searchPlaceholder": "ابحث بالمحل أو الترخيص البلدي أو المورّد…",
+    "emptyTitle": "لا توجد تراخيص محلات بعد",
+    "emptyDescription": "أضف أول ترخيص محل للبدء.",
+    "noMatchesTitle": "لا توجد نتائج مطابقة",
+    "noMatchesDescription": "جرّب كلمة بحث مختلفة.",
+    "added": "تمت إضافة ترخيص المحل",
+    "updated": "تم تحديث ترخيص المحل",
+    "deleted": "تم حذف ترخيص المحل",
+    "deleteTitle": "حذف ترخيص المحل؟",
+    "deleteDescription": "سيؤدي هذا إلى إزالة {{name}} نهائيًا من سجلاتك.",
+    "shopLicensesAtRisk_zero": "لا تراخيص بحاجة إلى انتباه",
+    "shopLicensesAtRisk_one": "ترخيص واحد بحاجة إلى انتباه",
+    "shopLicensesAtRisk_two": "ترخيصان بحاجة إلى انتباه",
+    "shopLicensesAtRisk_few": "{{count}} تراخيص بحاجة إلى انتباه",
+    "shopLicensesAtRisk_many": "{{count}} ترخيصًا بحاجة إلى انتباه",
+    "shopLicensesAtRisk_other": "{{count}} ترخيص بحاجة إلى انتباه",
+    "shopLicensesAtRiskDescription": "منتهية أو تنتهي خلال الثلاثين يومًا القادمة.",
+    "columns": {
+      "shop": "المحل",
+      "municipalLicense": "الترخيص البلدي",
+      "expiryDate": "تاريخ الانتهاء",
+      "refundInvoiceNumber": "رقم فاتورة الاسترداد",
+      "supplierName": "المورّد",
+      "refund": "المبلغ المسترد"
+    },
+    "form": {
+      "editTitle": "تعديل ترخيص المحل",
+      "addTitle": "إضافة ترخيص محل",
+      "editDescription": "تحديث بيانات ترخيص هذا المحل.",
+      "addDescription": "أدخل بيانات ترخيص المحل الجديد.",
+      "shop": "المحل",
+      "municipalLicense": "الترخيص البلدي",
+      "licenseExpiryDate": "تاريخ انتهاء الترخيص",
+      "refundInvoiceNumber": "رقم فاتورة الاسترداد (اختياري)",
+      "supplierName": "اسم المورّد (اختياري)",
+      "refund": "المبلغ المسترد (ريال، اختياري)",
+      "submitAdd": "إضافة ترخيص محل"
+    }
+  },
   "lease": {
     "status": {
       "expired": "منتهي",
@@ -362,7 +406,8 @@
       "paidAmount": "المبلغ المدفوع",
       "debtWeOwe": "مبلغ الدين",
       "debtOwedToUs": "مبلغ الدين المستحق لنا",
-      "amountDisbursed": "المبلغ المصروف"
+      "amountDisbursed": "المبلغ المصروف",
+      "refund": "مبلغ الاسترداد"
     },
     "amountRequired": "{{field}} مطلوب",
     "amountNegative": "{{field}} لا يمكن أن يكون سالبًا",
@@ -398,7 +443,13 @@
     "unifiedNumberRequired": "الرقم الموحد مطلوب",
     "unifiedNumberMax": "يجب ألا يتجاوز الرقم الموحد 40 حرفًا",
     "expiryDateRequired": "تاريخ الانتهاء مطلوب",
-    "expiryDateInvalid": "يجب أن يكون تاريخ الانتهاء صحيحًا"
+    "expiryDateInvalid": "يجب أن يكون تاريخ الانتهاء صحيحًا",
+    "shopMin": "يجب أن يتكون المحل من حرفين على الأقل",
+    "shopMax": "يجب ألا يتجاوز المحل 80 حرفًا",
+    "municipalLicenseRequired": "الترخيص البلدي مطلوب",
+    "municipalLicenseMax": "يجب ألا يتجاوز الترخيص البلدي 40 حرفًا",
+    "refundInvoiceNumberMax": "يجب ألا يتجاوز رقم فاتورة الاسترداد 40 حرفًا",
+    "supplierNameMax": "يجب ألا يتجاوز اسم المورّد 80 حرفًا"
   },
   "notFound": {
     "code": "404",

@@ -5,6 +5,7 @@ import {
   LogOutIcon,
   ReceiptIcon,
   ScrollTextIcon,
+  StampIcon,
   StoreIcon,
   UsersIcon,
 } from "lucide-react"
@@ -26,6 +27,7 @@ const NAV_ITEMS = [
   { to: "/receivables", labelKey: "nav.receivables", icon: CoinsIcon },
   { to: "/expenses", labelKey: "nav.expenses", icon: ReceiptIcon },
   { to: "/licenses", labelKey: "nav.licenses", icon: ScrollTextIcon },
+  { to: "/shop-licenses", labelKey: "nav.shopLicenses", icon: StampIcon },
 ]
 
 function NavLinks({ className }: { className?: string }) {

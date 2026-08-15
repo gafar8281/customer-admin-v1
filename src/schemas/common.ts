@@ -11,6 +11,17 @@ export function sarAmount(t: TFunction, fieldKey: string) {
   )
 }
 
+export function optionalSarAmount(t: TFunction, fieldKey: string) {
+  const field = t(`validation.fields.${fieldKey}`)
+  return z.preprocess(
+    (value) => (value === "" || value === null || value === undefined ? null : value),
+    z
+      .coerce.number({ error: t("validation.amountRequired", { field }) })
+      .nonnegative(t("validation.amountNegative", { field }))
+      .nullable()
+  )
+}
+
 export function integerCount(t: TFunction, fieldKey: string) {
   const field = t(`validation.fields.${fieldKey}`)
   return z.preprocess(

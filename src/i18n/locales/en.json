@@ -25,6 +25,7 @@
     "receivables": "Debts Receivable",
     "expenses": "Expenses",
     "licenses": "Commercial Licenses",
+    "shopLicenses": "Shop Licenses",
     "signOut": "Sign out",
     "toggleLanguage": "Switch to Arabic"
   },
@@ -307,6 +308,45 @@
       "submitAdd": "Add license"
     }
   },
+  "shopLicenses": {
+    "title": "Shop Licenses",
+    "description": "Manage municipal licenses for shops and their refund details.",
+    "add": "Add Shop License",
+    "searchPlaceholder": "Search by shop, municipal license, or supplier…",
+    "emptyTitle": "No shop licenses yet",
+    "emptyDescription": "Add your first shop license to get started.",
+    "noMatchesTitle": "No matches found",
+    "noMatchesDescription": "Try a different search term.",
+    "added": "Shop license added",
+    "updated": "Shop license updated",
+    "deleted": "Shop license deleted",
+    "deleteTitle": "Delete shop license?",
+    "deleteDescription": "This will permanently remove {{name}} from your records.",
+    "shopLicensesAtRisk_one": "{{count}} shop license needs attention",
+    "shopLicensesAtRisk_other": "{{count}} shop licenses need attention",
+    "shopLicensesAtRiskDescription": "Expired or expiring within the next 30 days.",
+    "columns": {
+      "shop": "Shop",
+      "municipalLicense": "Municipal License",
+      "expiryDate": "Expiry Date",
+      "refundInvoiceNumber": "Refund Invoice #",
+      "supplierName": "Supplier",
+      "refund": "Refund"
+    },
+    "form": {
+      "editTitle": "Edit Shop License",
+      "addTitle": "Add Shop License",
+      "editDescription": "Update this shop license's details.",
+      "addDescription": "Enter the details for the new shop license.",
+      "shop": "Shop",
+      "municipalLicense": "Municipal License",
+      "licenseExpiryDate": "License Expiry Date",
+      "refundInvoiceNumber": "Refund Invoice Number (optional)",
+      "supplierName": "Supplier Name (optional)",
+      "refund": "Refund (SAR, optional)",
+      "submitAdd": "Add shop license"
+    }
+  },
   "lease": {
     "status": {
       "expired": "Expired",
@@ -354,7 +394,8 @@
       "paidAmount": "Paid amount",
       "debtWeOwe": "Debt amount",
       "debtOwedToUs": "Receivable amount",
-      "amountDisbursed": "Amount disbursed"
+      "amountDisbursed": "Amount disbursed",
+      "refund": "Refund amount"
     },
     "amountRequired": "{{field}} is required",
     "amountNegative": "{{field}} cannot be negative",
@@ -390,7 +431,13 @@
     "unifiedNumberRequired": "Unified number is required",
     "unifiedNumberMax": "Unified number must be at most 40 characters",
     "expiryDateRequired": "Expiry date is required",
-    "expiryDateInvalid": "Expiry date must be a valid date"
+    "expiryDateInvalid": "Expiry date must be a valid date",
+    "shopMin": "Shop must be at least 2 characters",
+    "shopMax": "Shop must be at most 80 characters",
+    "municipalLicenseRequired": "Municipal license is required",
+    "municipalLicenseMax": "Municipal license must be at most 40 characters",
+    "refundInvoiceNumberMax": "Refund invoice number must be at most 40 characters",
+    "supplierNameMax": "Supplier name must be at most 80 characters"
   },
   "notFound": {
     "code": "404",

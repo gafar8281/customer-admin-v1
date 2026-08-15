@@ -11,6 +11,7 @@ import { ReceivablesPage } from "@/pages/ReceivablesPage"
 import { ExpensesPage } from "@/pages/ExpensesPage"
 import { ExpenseMonthPage } from "@/pages/ExpenseMonthPage"
 import { LicensesPage } from "@/pages/LicensesPage"
+import { ShopLicensesPage } from "@/pages/ShopLicensesPage"
 import { NotFoundPage } from "@/pages/NotFoundPage"
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
           <Route path="expenses" element={<ExpensesPage />} />
           <Route path="expenses/:monthId" element={<ExpenseMonthPage />} />
           <Route path="licenses" element={<LicensesPage />} />
+          <Route path="shop-licenses" element={<ShopLicensesPage />} />
         </Route>
       </Route>
       <Route path="*" element={<NotFoundPage />} />
